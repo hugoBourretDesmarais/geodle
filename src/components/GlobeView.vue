@@ -1,28 +1,28 @@
 <script setup>
 import { onMounted, onBeforeUnmount, ref, watch } from 'vue'
 import Globe from 'globe.gl'
-import * as topojson from 'topojson-client'
-import world from 'world-atlas/countries-110m.json'
+import { countries, infoFor } from '../game/world.js'
 import { midpoint } from '../game/geo.js'
 
 const props = defineProps({
-  guess: { type: Object, default: null },
-  target: { type: Object, default: null },
-  revealed: { type: Boolean, default: false },
+  pins: { type: Array, default: () => [] },
+  arc: { type: Object, default: null },
+  highlightId: { type: String, default: null },
   interactive: { type: Boolean, default: true },
+  labels: { type: Boolean, default: false },
 })
-const emit = defineEmits(['pick'])
+const emit = defineEmits(['pick', 'country'])
 
 const el = ref(null)
 let globe = null
 let hovered = null
 
+const HOME = { lat: 25, lng: 10, altitude: 2.3 }
 const OCEAN = '#0c2340'
 const LAND = '#2c6e55'
 const LAND_HOVER = '#3d8a6b'
+const LAND_HIT = '#ffb35c'
 const BORDER = 'rgba(8, 18, 34, 0.9)'
-
-const countries = topojson.feature(world, world.objects.countries).features
 
 function pinElement(d) {
   const wrap = document.createElement('div')
@@ -31,29 +31,39 @@ function pinElement(d) {
   return wrap
 }
 
-function markers() {
-  const list = []
-  if (props.guess) list.push({ kind: 'guess', ...props.guess })
-  if (props.revealed && props.target) list.push({ kind: 'target', lat: props.target.lat, lng: props.target.lng })
-  return list
+function capColor(d) {
+  if (d.id === props.highlightId) return LAND_HIT
+  return d === hovered ? LAND_HOVER : LAND
 }
 
-function arcs() {
-  if (!props.revealed || !props.guess || !props.target) return []
-  return [{ startLat: props.guess.lat, startLng: props.guess.lng, endLat: props.target.lat, endLng: props.target.lng }]
+function altitude(d) {
+  return d.id === props.highlightId ? 0.016 : d === hovered ? 0.011 : 0.006
+}
+
+function refreshPolygons() {
+  globe?.polygonCapColor(capColor).polygonAltitude(altitude)
+}
+
+function label(d) {
+  if (!props.labels) return ''
+  const info = infoFor(d)
+  return `<div class="tip"><b>${info.country}</b>${info.capital ? `<span>${info.capital}</span>` : ''}</div>`
 }
 
 function sync() {
   if (!globe) return
-  globe.htmlElementsData(markers())
-  globe.arcsData(arcs())
+  globe.htmlElementsData(props.pins.map(p => ({ ...p })))
+  globe.arcsData(props.arc ? [{ ...props.arc }] : [])
+  refreshPolygons()
 }
 
-function flyToReveal(distanceKm) {
-  if (!globe || !props.guess || !props.target) return
-  const mid = midpoint(props.guess, props.target)
-  const altitude = Math.min(2.6, Math.max(0.45, distanceKm / 5500))
-  globe.pointOfView({ ...mid, altitude }, 1100)
+function flyBetween(a, b, distanceKm) {
+  const mid = midpoint(a, b)
+  globe?.pointOfView({ ...mid, altitude: Math.min(2.6, Math.max(0.45, distanceKm / 5500)) }, 1100)
+}
+
+function flyTo(lat, lng, altitude = 1) {
+  globe?.pointOfView({ lat, lng, altitude }, 1000)
 }
 
 function resize() {
@@ -61,9 +71,9 @@ function resize() {
   globe.width(el.value.clientWidth).height(el.value.clientHeight)
 }
 
-function pick({ lat, lng }) {
-  if (!props.interactive) return
-  emit('pick', { lat, lng })
+function onPolygonClick(d, _, coords) {
+  emit('country', d, coords)
+  if (props.interactive) emit('pick', { lat: coords.lat, lng: coords.lng })
 }
 
 onMounted(() => {
@@ -73,20 +83,22 @@ onMounted(() => {
     .atmosphereColor('#4f9cff')
     .atmosphereAltitude(0.16)
     .polygonsData(countries)
-    .polygonAltitude(d => (d === hovered ? 0.012 : 0.006))
-    .polygonCapColor(d => (d === hovered ? LAND_HOVER : LAND))
+    .polygonAltitude(altitude)
+    .polygonCapColor(capColor)
     .polygonSideColor(() => 'rgba(0,0,0,0)')
     .polygonStrokeColor(() => BORDER)
+    .polygonCapCurvatureResolution(4)
     .polygonsTransitionDuration(150)
+    .polygonLabel(label)
     .onPolygonHover(d => {
       hovered = d
-      globe.polygonCapColor(globe.polygonCapColor()).polygonAltitude(globe.polygonAltitude())
+      refreshPolygons()
     })
-    .onPolygonClick((_, __, coords) => pick(coords))
-    .onGlobeClick(coords => pick(coords))
+    .onPolygonClick(onPolygonClick)
+    .onGlobeClick(coords => props.interactive && emit('pick', coords))
     .htmlElementsData([])
     .htmlElement(pinElement)
-    .htmlAltitude(0.012)
+    .htmlAltitude(0.018)
     .htmlTransitionDuration(0)
     .arcsData([])
     .arcColor(() => ['#ff6b35', '#7cf2c4'])
@@ -104,12 +116,12 @@ onMounted(() => {
   const controls = globe.controls()
   controls.autoRotate = false
   controls.enablePan = false
-  controls.minDistance = 130
+  controls.minDistance = 115
   controls.maxDistance = 520
   controls.zoomSpeed = 0.7
   controls.rotateSpeed = 0.6
 
-  globe.pointOfView({ lat: 25, lng: 10, altitude: 2.3 }, 0)
+  globe.pointOfView(HOME, 0)
   resize()
   window.addEventListener('resize', resize)
   sync()
@@ -121,9 +133,9 @@ onBeforeUnmount(() => {
   globe = null
 })
 
-watch(() => [props.guess, props.target, props.revealed], sync, { deep: true })
+watch(() => [props.pins, props.arc, props.highlightId, props.labels], sync, { deep: true })
 
-defineExpose({ flyToReveal, resetView: () => globe?.pointOfView({ lat: 25, lng: 10, altitude: 2.3 }, 900) })
+defineExpose({ flyBetween, flyTo, resetView: () => globe?.pointOfView(HOME, 900) })
 </script>
 
 <template>
@@ -134,11 +146,15 @@ defineExpose({ flyToReveal, resetView: () => globe?.pointOfView({ lat: 25, lng: 
 .globe { position: absolute; inset: 0; }
 .globe canvas { display: block; cursor: crosshair; }
 .globe.locked canvas { cursor: grab; }
+.globe .scene-tooltip { font-family: var(--font-body); }
+.tip { display: flex; flex-direction: column; padding: 8px 12px; border-radius: 10px; background: rgba(13, 20, 38, .92); border: 1px solid rgba(255, 255, 255, .1); color: #eef2ff; font-size: 14px; line-height: 1.3; box-shadow: 0 8px 20px rgba(0, 0, 0, .4); }
+.tip span { color: #9aa5c4; font-size: 12.5px; }
 .pin { width: 32px; height: 44px; transform: translateY(-50%); pointer-events: none; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .55)); }
 .pin svg path { stroke: #fff; stroke-width: 2; }
 .pin svg circle { fill: #fff; }
 .pin.guess svg path { fill: #ff6b35; }
 .pin.target svg path { fill: #22c55e; }
+.pin.capital svg path { fill: #4f9cff; }
 .pin.guess { animation: drop .35s cubic-bezier(.2, .9, .3, 1.3); }
 @keyframes drop { from { transform: translateY(-90%); opacity: 0; } to { transform: translateY(-50%); opacity: 1; } }
 </style>

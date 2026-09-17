@@ -1,15 +1,23 @@
 # GeoDle
 
-Practice the world's capitals GeoGuessr-style: read a capital's name, drop a pin on a 3D globe,
-get told how far off you were. Five rounds per game, raw kilometres, no daily limit. Country
-borders are drawn, names are not. Stats live in `localStorage`; there is no backend.
+Learn the world map GeoGuessr-style on a 3D globe. Three modes:
+
+- **Countries** — read a country name, pin it. Landing inside scores 0 km; otherwise the distance
+  to its nearest border.
+- **Capitals** — read a capital, pin the city, scored by straight-line distance.
+- **Explore** — free roam: hover for country and capital names, click or search to fly to one.
+
+Five rounds per game, raw kilometres, no daily limit, optional continent filter. Country borders
+are drawn, names are not. Stats live in `localStorage`; there is no backend.
 
 Live at https://hugobourretdesmarais.github.io/geodle/ (Home: https://hugobourretdesmarais.github.io/).
 
 ## Stack
 
 Vue 3 + Vite. The globe is [globe.gl](https://github.com/vasturiano/globe.gl) (three.js) rendering
-Natural Earth 1:110m country polygons from `world-atlas`; no map tiles or textures are fetched.
+Natural Earth 1:50m country polygons from `world-atlas` (Tuvalu is the only state without one; it is
+scored as a 30 km point). Point-in-polygon and nearest-border maths live in `src/game/geo.js`, with
+antimeridian-crossing rings (Russia, Fiji) unwrapped first. No map tiles or textures are fetched.
 
 ## Data
 

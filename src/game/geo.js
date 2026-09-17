@@ -42,3 +42,91 @@ export function shuffle(list) {
   }
   return a
 }
+
+export function normalizeLng(lng) {
+  return ((lng + 540) % 360) - 180
+}
+
+// Rings that cross the antimeridian (Russia, Fiji) jump 360° between neighbours; unwrap them
+// into a continuous strip and test the point at each 360° image.
+function unwrap(ring) {
+  const out = [ring[0]]
+  for (let i = 1; i < ring.length; i++) {
+    const prev = out[i - 1][0]
+    let x = ring[i][0]
+    while (x - prev > 180) x -= 360
+    while (x - prev < -180) x += 360
+    out.push([x, ring[i][1]])
+  }
+  return out
+}
+
+function rayCast(ring, lng, lat) {
+  let inside = false
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const [xi, yi] = ring[i], [xj, yj] = ring[j]
+    if (yi > lat !== yj > lat && lng < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) inside = !inside
+  }
+  return inside
+}
+
+function ringContains(ring, p) {
+  const r = unwrap(ring)
+  return rayCast(r, p.lng, p.lat) || rayCast(r, p.lng + 360, p.lat) || rayCast(r, p.lng - 360, p.lat)
+}
+
+function polygons(geometry) {
+  if (!geometry) return []
+  if (geometry.type === 'Polygon') return [geometry.coordinates]
+  if (geometry.type === 'MultiPolygon') return geometry.coordinates
+  return []
+}
+
+export function pointInFeature(p, feature) {
+  return polygons(feature?.geometry).some(poly => poly.reduce((acc, ring) => acc !== ringContains(ring, p), false))
+}
+
+// Nearest boundary point of the feature, computed on a local flat projection around p.
+function nearestOnBoundary(p, feature) {
+  const kx = Math.cos(rad(p.lat)) * 111.32, ky = 110.57
+  let best = null
+  for (const poly of polygons(feature.geometry)) {
+    for (const ring of poly) {
+      for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        const ax = normalizeLng(ring[j][0] - p.lng) * kx, ay = (ring[j][1] - p.lat) * ky
+        const bx = normalizeLng(ring[i][0] - p.lng) * kx, by = (ring[i][1] - p.lat) * ky
+        const dx = bx - ax, dy = by - ay
+        const len2 = dx * dx + dy * dy
+        const t = len2 ? Math.max(0, Math.min(1, -(ax * dx + ay * dy) / len2)) : 0
+        const qx = ax + t * dx, qy = ay + t * dy
+        const d2 = qx * qx + qy * qy
+        if (!best || d2 < best.d2) best = { d2, lat: p.lat + qy / ky, lng: normalizeLng(p.lng + qx / kx) }
+      }
+    }
+  }
+  return best
+}
+
+export function distanceToFeature(p, feature) {
+  if (pointInFeature(p, feature)) return { km: 0, nearest: null }
+  const q = nearestOnBoundary(p, feature)
+  return { km: distanceKm(p, q), nearest: { lat: q.lat, lng: q.lng } }
+}
+
+export function featureBounds(feature) {
+  let minLat = 90, maxLat = -90, minLng = 180, maxLng = -180
+  for (const poly of polygons(feature.geometry))
+    for (const [lng, lat] of poly[0]) {
+      if (lat < minLat) minLat = lat
+      if (lat > maxLat) maxLat = lat
+      if (lng < minLng) minLng = lng
+      if (lng > maxLng) maxLng = lng
+    }
+  return { minLat, maxLat, minLng, maxLng }
+}
+
+export function featureCenter(feature) {
+  const b = featureBounds(feature)
+  const span = Math.max(b.maxLat - b.minLat, (b.maxLng - b.minLng) * Math.cos(rad((b.minLat + b.maxLat) / 2)))
+  return { lat: (b.minLat + b.maxLat) / 2, lng: (b.minLng + b.maxLng) / 2, span }
+}
