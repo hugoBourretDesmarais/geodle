@@ -50,6 +50,7 @@ function next() {
   if (index.value + 1 >= rounds.value.length) {
     stats.value = recordGame(rounds.value)
     screen.value = 'summary'
+    globeRef.value?.resetView()
     return
   }
   index.value += 1
