@@ -4,15 +4,18 @@ import GlobeView from './components/GlobeView.vue'
 import { capitals, featureFor, infoFor, featureById } from './game/world.js'
 import { distanceKm, distanceToFeature, featureCenter, formatKm, verdict, shuffle } from './game/geo.js'
 import { loadStats, recordGame, resetStats } from './game/stats.js'
+import { GRADES, loadCards, resetCards, grade as gradeCard, nextInterval, formatInterval, counts, nextDue, buildQueue } from './game/srs.js'
 
 const ROUNDS = 5
 const REGIONS = ['All', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania']
 const MODES = [
   { id: 'country', name: 'Countries', blurb: 'Read a country, pin it. Land inside and you score 0 km.' },
   { id: 'capital', name: 'Capitals', blurb: 'Read a capital, pin the city. Scored by distance.' },
+  { id: 'learn', name: 'Learn', blurb: 'Flashcards. A country lights up, you name it, grade yourself. Spaced repetition.' },
   { id: 'explore', name: 'Explore', blurb: 'Free roam. Hover for names, click for the capital, search anything.' },
 ]
 const POINT_COUNTRY_KM = 30
+const NEW_LIMITS = [5, 10, 20]
 
 const screen = ref('start')
 const mode = ref('country')
@@ -27,13 +30,25 @@ const globeRef = ref(null)
 const query = ref('')
 const selected = ref(null)
 
+const cards = ref(loadCards())
+const newLimit = ref(10)
+const queue = ref([])
+const current = ref(null)
+const shown = ref(false)
+const session = ref({ reviewed: 0, again: 0 })
+
 const round = computed(() => rounds.value[index.value])
 const totalKm = computed(() => rounds.value.reduce((s, r) => s + (r.distanceKm ?? 0), 0))
 const pool = computed(() => (region.value === 'All' ? capitals : capitals.filter(c => c.region === region.value)))
 const avgKm = computed(() => (stats.value.guesses ? stats.value.totalKm / stats.value.guesses : null))
 const playing = computed(() => screen.value === 'play')
 const exploring = computed(() => screen.value === 'explore')
-const gameMode = computed(() => (mode.value === 'explore' ? 'country' : mode.value))
+const learning = computed(() => screen.value === 'learn')
+const gameMode = computed(() => (mode.value === 'capital' ? 'capital' : 'country'))
+const learnCounts = computed(() => counts(cards.value, pool.value))
+const learnNextDue = computed(() => nextDue(cards.value, pool.value))
+const currentFeature = computed(() => (current.value ? featureFor(current.value) : null))
+const currentTiny = computed(() => !currentFeature.value || featureCenter(currentFeature.value).span < 1.5)
 
 const prompt = computed(() => (round.value ? (gameMode.value === 'capital' ? round.value.capital.capital : round.value.capital.country) : ''))
 
@@ -46,6 +61,7 @@ const pins = computed(() => {
     return list
   }
   if (exploring.value && selected.value?.capital) return [{ kind: 'capital', lat: selected.value.lat, lng: selected.value.lng }]
+  if (learning.value && current.value && (shown.value || currentTiny.value)) return [{ kind: 'capital', lat: current.value.lat, lng: current.value.lng }]
   return []
 })
 
@@ -60,6 +76,7 @@ const arc = computed(() => {
 const highlightId = computed(() => {
   if (playing.value && revealed.value) return round.value.capital.ccn3
   if (exploring.value && selected.value) return selected.value.ccn3
+  if (learning.value && current.value) return current.value.ccn3
   return null
 })
 
@@ -69,7 +86,56 @@ const results = computed(() => {
   return capitals.filter(c => c.country.toLowerCase().includes(q) || c.capital.toLowerCase().includes(q)).slice(0, 8)
 })
 
+function focusCountry(cap, minAlt = 0.4) {
+  const feature = featureFor(cap)
+  if (feature) {
+    const c = featureCenter(feature)
+    globeRef.value?.flyTo(c.lat, c.lng, Math.min(2.2, Math.max(minAlt, c.span / 30)))
+  } else {
+    globeRef.value?.flyTo(cap.lat, cap.lng, 0.6)
+  }
+}
+
+function showNext() {
+  shown.value = false
+  current.value = queue.value.shift() || null
+  if (current.value) focusCountry(current.value, 0.25)
+  else globeRef.value?.resetView()
+}
+
+function beginLearn() {
+  cards.value = loadCards()
+  queue.value = buildQueue(cards.value, pool.value, newLimit.value)
+  session.value = { reviewed: 0, again: 0 }
+  screen.value = 'learn'
+  showNext()
+}
+
+function reveal() {
+  if (!learning.value || !current.value || shown.value) return
+  shown.value = true
+}
+
+function rate(g) {
+  if (!learning.value || !current.value || !shown.value) return
+  cards.value = gradeCard(cards.value, current.value.ccn3, g)
+  session.value.reviewed += 1
+  if (g === 'again') {
+    session.value.again += 1
+    queue.value.splice(Math.min(3, queue.value.length), 0, current.value)
+  }
+  showNext()
+}
+
+function wipeCards() {
+  if (window.confirm('Forget all flashcard progress?')) {
+    resetCards()
+    cards.value = {}
+  }
+}
+
 function begin() {
+  if (mode.value === 'learn') return beginLearn()
   if (mode.value === 'explore') {
     screen.value = 'explore'
     selected.value = null
@@ -134,13 +200,7 @@ function next() {
 function select(cap) {
   selected.value = cap
   query.value = ''
-  const feature = featureById.get(cap.ccn3)
-  if (feature) {
-    const c = featureCenter(feature)
-    globeRef.value?.flyTo(c.lat, c.lng, Math.min(2.2, Math.max(0.4, c.span / 30)))
-  } else {
-    globeRef.value?.flyTo(cap.lat, cap.lng, 0.6)
-  }
+  focusCountry(cap)
 }
 
 function onCountry(feature) {
@@ -153,8 +213,18 @@ function onKey(e) {
     selected.value = null
     return
   }
+  if (e.target.tagName === 'INPUT') return
+  if (learning.value) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      reveal()
+    }
+    const g = GRADES.find(x => x.key === e.key)
+    if (g) rate(g.id)
+    return
+  }
   if (e.key !== 'Enter' && e.key !== ' ') return
-  if (!playing.value || e.target.tagName === 'INPUT') return
+  if (!playing.value) return
   e.preventDefault()
   revealed.value ? next() : confirm()
 }
@@ -195,6 +265,17 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
         <span class="hud-value">{{ formatKm(totalKm) }}</span>
       </div>
       <button v-if="exploring" class="ghost small" @click="screen = 'start'">Done exploring</button>
+      <div v-if="learning" class="hud">
+        <span class="hud-mode">Learn</span>
+        <span class="hud-sep"></span>
+        <span class="hud-label">Left</span>
+        <span class="hud-value">{{ queue.length + (current ? 1 : 0) }}</span>
+        <span class="hud-sep"></span>
+        <span class="hud-label">Done</span>
+        <span class="hud-value">{{ session.reviewed }}</span>
+        <span class="hud-sep"></span>
+        <button class="linkish" @click="screen = 'start'">Stop</button>
+      </div>
     </header>
 
     <section v-if="screen === 'start'" class="modal start">
@@ -210,7 +291,19 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
           {{ r }} <small>{{ r === 'All' ? capitals.length : capitals.filter(c => c.region === r).length }}</small>
         </button>
       </div>
-      <button class="primary" @click="begin">{{ mode === 'explore' ? 'Explore the globe' : `Start · ${ROUNDS} rounds` }}</button>
+      <div v-if="mode === 'learn'" class="learn-meta">
+        <div class="learn-counts">
+          <span><b>{{ learnCounts.due }}</b> due</span>
+          <span><b>{{ learnCounts.fresh }}</b> unseen</span>
+          <span><b>{{ learnCounts.learned }}</b> learned</span>
+        </div>
+        <div class="chips tight">
+          <span class="chips-label">New per session</span>
+          <button v-for="n in NEW_LIMITS" :key="n" class="chip" :class="{ on: newLimit === n }" @click="newLimit = n">{{ n }}</button>
+        </div>
+      </div>
+      <button class="primary" @click="begin">{{ mode === 'explore' ? 'Explore the globe' : mode === 'learn' ? 'Review' : `Start · ${ROUNDS} rounds` }}</button>
+      <button v-if="mode === 'learn' && learnCounts.learned + learnCounts.due" class="ghost" @click="wipeCards">Forget flashcard progress</button>
       <dl v-if="stats.games" class="stats">
         <div><dt>Games</dt><dd>{{ stats.games }}</dd></div>
         <div><dt>Avg / guess</dt><dd>{{ formatKm(avgKm) }}</dd></div>
@@ -264,6 +357,40 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
       <p v-else class="hint">Hover a country for its name. Click one, or search, to see its capital.</p>
     </template>
 
+    <template v-if="learning">
+      <template v-if="current">
+        <div class="prompt">
+          <span class="prompt-label">Which country is lit up?</span>
+          <strong v-if="shown" class="prompt-city">{{ current.country }}</strong>
+          <strong v-else class="prompt-city muted">?</strong>
+        </div>
+        <div class="bottom">
+          <button v-if="!shown" class="primary" @click="reveal">Show answer</button>
+          <div v-else class="result">
+            <div class="result-answer"><span class="dot capital"></span>Capital <b>{{ current.capital }}</b> · {{ current.subregion || current.region }}</div>
+            <div class="grades">
+              <button v-for="g in GRADES" :key="g.id" class="grade" :class="g.id" @click="rate(g.id)">
+                <span>{{ g.label }}</span><small>{{ formatInterval(nextInterval(cards[current.ccn3], g.id)) }}</small>
+              </button>
+            </div>
+            <span class="keys">keys 1–4</span>
+          </div>
+        </div>
+      </template>
+      <section v-else class="modal">
+        <h1>{{ session.reviewed ? 'Session done' : 'Nothing due' }}</h1>
+        <p class="lead">
+          <template v-if="session.reviewed">{{ session.reviewed }} cards reviewed, {{ session.again }} sent back. </template>
+          <template v-if="learnNextDue">Next card due {{ formatInterval(learnNextDue - Date.now()) }} from now.</template>
+          <template v-else-if="learnCounts.fresh">{{ learnCounts.fresh }} countries still unseen.</template>
+        </p>
+        <div class="row">
+          <button v-if="learnCounts.fresh" class="primary" @click="beginLearn">Learn {{ Math.min(newLimit, learnCounts.fresh) }} new</button>
+          <button class="ghost" @click="screen = 'start'">Back</button>
+        </div>
+      </section>
+    </template>
+
     <section v-if="screen === 'summary'" class="modal summary">
       <h1>{{ formatKm(totalKm) }}</h1>
       <p class="lead">{{ gameMode === 'capital' ? 'Capitals' : 'Countries' }} · total over {{ rounds.length }} rounds · {{ formatKm(totalKm / rounds.length) }} per pin</p>
@@ -299,6 +426,20 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 .hud-label { color: var(--muted); }
 .hud-value { font-family: var(--font-display); font-weight: 700; font-variant-numeric: tabular-nums; }
 .hud-sep { width: 1px; height: 16px; background: var(--panel-border); }
+.linkish { border: 0; background: transparent; color: var(--muted); font-weight: 600; padding: 0; }
+.linkish:hover { color: var(--text); }
+.prompt-city.muted { color: var(--muted); }
+.learn-meta { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.learn-counts { display: flex; gap: 18px; color: var(--muted); font-size: 14px; }
+.learn-counts b { color: var(--text); font-family: var(--font-display); font-size: 16px; }
+.chips.tight { gap: 6px; }
+.chips-label { align-self: center; color: var(--muted); font-size: 13px; margin-right: 4px; }
+.grades { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; width: 100%; margin-top: 6px; }
+.grade { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 10px 6px; border-radius: 12px; border: 1px solid var(--panel-border); background: rgba(255, 255, 255, .05); color: var(--text); font-weight: 700; font-family: var(--font-display); }
+.grade small { font-family: var(--font-body); font-weight: 500; color: var(--muted); font-size: 12px; }
+.grade:hover { border-color: rgba(255, 255, 255, .3); }
+.grade.again { color: #ff7b7b; } .grade.hard { color: #ffb35c; } .grade.good { color: var(--accent-2); } .grade.easy { color: #4f9cff; }
+.keys { margin-top: 6px; color: var(--muted); font-size: 12px; }
 
 .prompt { position: absolute; top: 70px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 28px; border-radius: 16px; background: var(--panel); border: 1px solid var(--panel-border); backdrop-filter: blur(8px); box-shadow: 0 12px 30px rgba(0, 0, 0, .35); pointer-events: none; max-width: 92vw; }
 .prompt-label { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); }
@@ -325,7 +466,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 .modal { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(92vw, 560px); max-height: calc(100vh - 140px); overflow: auto; padding: 30px 30px 26px; border-radius: 24px; background: var(--panel); border: 1px solid var(--panel-border); backdrop-filter: blur(14px); box-shadow: 0 24px 60px rgba(0, 0, 0, .55); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 14px; }
 .modal h1 { margin: 0; font-family: var(--font-display); font-size: clamp(30px, 6vw, 44px); font-weight: 800; letter-spacing: -.5px; }
 .lead { margin: 0; color: var(--muted); line-height: 1.5; max-width: 42ch; }
-.modes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
+.modes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
 .mode { display: flex; flex-direction: column; gap: 6px; padding: 14px 12px; border-radius: 14px; border: 1px solid var(--panel-border); background: rgba(255, 255, 255, .04); color: var(--text); text-align: left; transition: border-color .12s, background .12s; }
 .mode strong { font-family: var(--font-display); font-size: 17px; }
 .mode span { color: var(--muted); font-size: 13px; line-height: 1.4; }
@@ -372,6 +513,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
   .prompt { top: 64px; padding: 10px 18px; }
   .bottom, .card { bottom: 48px; }
   .modes { grid-template-columns: 1fr; }
+  .grades { grid-template-columns: repeat(2, 1fr); }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .hud { font-size: 13px; padding: 6px 10px; }
   .hud-mode { display: none; }

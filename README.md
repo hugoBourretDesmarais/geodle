@@ -5,9 +5,12 @@ Learn the world map GeoGuessr-style on a 3D globe. Three modes:
 - **Countries** — read a country name, pin it. Landing inside scores 0 km; otherwise the distance
   to its nearest border.
 - **Capitals** — read a capital, pin the city, scored by straight-line distance.
+- **Learn** — Anki-style flashcards. A country lights up on the globe, you name it, flip, and grade
+  yourself Again / Hard / Good / Easy (keys 1–4). SM-2 scheduling in `src/game/srs.js`, progress in
+  `localStorage` under `geodle.srs`. New cards arrive largest-country-first, 5/10/20 per session.
 - **Explore** — free roam: hover for country and capital names, click or search to fly to one.
 
-Five rounds per game, raw kilometres, no daily limit, optional continent filter. Country borders
+Five rounds per game, raw kilometres, no daily limit, optional continent filter (also scopes Learn). Country borders
 are drawn, names are not. Stats live in `localStorage`; there is no backend.
 
 Live at https://hugobourretdesmarais.github.io/geodle/ (Home: https://hugobourretdesmarais.github.io/).

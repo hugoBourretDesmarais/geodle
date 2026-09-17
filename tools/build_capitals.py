@@ -76,6 +76,7 @@ for c in countries:
         "ccn3": c["ccn3"],
         "region": c["region"],
         "subregion": c.get("subregion", ""),
+        "area": c.get("area", 0),
         "lat": round(hit["latitude"], 4),
         "lng": round(hit["longitude"], 4),
     })
