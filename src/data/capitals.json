@@ -1,0 +1,1942 @@
+[
+ {
+  "capital": "Kabul",
+  "country": "Afghanistan",
+  "cca2": "AF",
+  "ccn3": "004",
+  "region": "Asia",
+  "subregion": "Southern Asia",
+  "lat": 34.5186,
+  "lng": 69.1813
+ },
+ {
+  "capital": "Tirana",
+  "country": "Albania",
+  "cca2": "AL",
+  "ccn3": "008",
+  "region": "Europe",
+  "subregion": "Southeast Europe",
+  "lat": 41.3275,
+  "lng": 19.8189
+ },
+ {
+  "capital": "Algiers",
+  "country": "Algeria",
+  "cca2": "DZ",
+  "ccn3": "012",
+  "region": "Africa",
+  "subregion": "Northern Africa",
+  "lat": 36.765,
+  "lng": 3.0486
+ },
+ {
+  "capital": "Andorra la Vella",
+  "country": "Andorra",
+  "cca2": "AD",
+  "ccn3": "020",
+  "region": "Europe",
+  "subregion": "Southern Europe",
+  "lat": 42.5,
+  "lng": 1.5165
+ },
+ {
+  "capital": "Luanda",
+  "country": "Angola",
+  "cca2": "AO",
+  "ccn3": "024",
+  "region": "Africa",
+  "subregion": "Middle Africa",
+  "lat": -8.8363,
+  "lng": 13.2325
+ },
+ {
+  "capital": "Saint John's",
+  "country": "Antigua and Barbuda",
+  "cca2": "AG",
+  "ccn3": "028",
+  "region": "Americas",
+  "subregion": "Caribbean",
+  "lat": 17.118,
+  "lng": -61.85
+ },
+ {
+  "capital": "Buenos Aires",
+  "country": "Argentina",
+  "cca2": "AR",
+  "ccn3": "032",
+  "region": "Americas",
+  "subregion": "South America",
+  "lat": -34.6006,
+  "lng": -58.3995
+ },
+ {
+  "capital": "Yerevan",
+  "country": "Armenia",
+  "cca2": "AM",
+  "ccn3": "051",
+  "region": "Asia",
+  "subregion": "Western Asia",
+  "lat": 40.1831,
+  "lng": 44.5116
+ },
+ {
+  "capital": "Canberra",
+  "country": "Australia",
+  "cca2": "AU",
+  "ccn3": "036",
+  "region": "Oceania",
+  "subregion": "Australia and New Zealand",
+  "lat": -35.283,
+  "lng": 149.129
+ },
+ {
+  "capital": "Vienna",
+  "country": "Austria",
+  "cca2": "AT",
+  "ccn3": "040",
+  "region": "Europe",
+  "subregion": "Central Europe",
+  "lat": 48.202,
+  "lng": 16.3647
+ },
+ {
+  "capital": "Baku",
+  "country": "Azerbaijan",
+  "cca2": "AZ",
+  "ccn3": "031",
+  "region": "Asia",
+  "subregion": "Western Asia",
+  "lat": 40.3972,
+  "lng": 49.8603
+ },
+ {
+  "capital": "Nassau",
+  "country": "Bahamas",
+  "cca2": "BS",
+  "ccn3": "044",
+  "region": "Americas",
+  "subregion": "Caribbean",
+  "lat": 25.0834,
+  "lng": -77.35
+ },
+ {
+  "capital": "Manama",
+  "country": "Bahrain",
+  "cca2": "BH",
+  "ccn3": "048",
+  "region": "Asia",
+  "subregion": "Western Asia",
+  "lat": 26.2361,
+  "lng": 50.5831
+ },
+ {
+  "capital": "Dhaka",
+  "country": "Bangladesh",
+  "cca2": "BD",
+  "ccn3": "050",
+  "region": "Asia",
+  "subregion": "Southern Asia",
+  "lat": 23.725,
+  "lng": 90.4066
+ },
+ {
+  "capital": "Bridgetown",
+  "country": "Barbados",
+  "cca2": "BB",
+  "ccn3": "052",
+  "region": "Americas",
+  "subregion": "Caribbean",
+  "lat": 13.102,
+  "lng": -59.6165
+ },
+ {
+  "capital": "Minsk",
+  "country": "Belarus",
+  "cca2": "BY",
+  "ccn3": "112",
+  "region": "Europe",
+  "subregion": "Eastern Europe",
+  "lat": 53.9019,
+  "lng": 27.5647
+ },
+ {
+  "capital": "Brussels",
+  "country": "Belgium",
+  "cca2": "BE",
+  "ccn3": "056",
+  "region": "Europe",
+  "subregion": "Western Europe",
+  "lat": 50.8353,
+  "lng": 4.3314
+ },
+ {
+  "capital": "Belmopan",
+  "country": "Belize",
+  "cca2": "BZ",
+  "ccn3": "084",
+  "region": "Americas",
+  "subregion": "Central America",
+  "lat": 17.252,
+  "lng": -88.7671
+ },
+ {
+  "capital": "Porto-Novo",
+  "country": "Benin",
+  "cca2": "BJ",
+  "ccn3": "204",
+  "region": "Africa",
+  "subregion": "Western Africa",
+  "lat": 6.4833,
+  "lng": 2.6166
+ },
+ {
+  "capital": "Thimphu",
+  "country": "Bhutan",
+  "cca2": "BT",
+  "ccn3": "064",
+  "region": "Asia",
+  "subregion": "Southern Asia",
+  "lat": 27.473,
+  "lng": 89.639
+ },
+ {
+  "capital": "Sucre",
+  "country": "Bolivia",
+  "cca2": "BO",
+  "ccn3": "068",
+  "region": "Americas",
+  "subregion": "South America",
+  "lat": -19.041,
+  "lng": -65.2595
+ },
+ {
+  "capital": "Sarajevo",
+  "country": "Bosnia and Herzegovina",
+  "cca2": "BA",
+  "ccn3": "070",
+  "region": "Europe",
+  "subregion": "Southeast Europe",
+  "lat": 43.85,
+  "lng": 18.383
+ },
+ {
+  "capital": "Gaborone",
+  "country": "Botswana",
+  "cca2": "BW",
+  "ccn3": "072",
+  "region": "Africa",
+  "subregion": "Southern Africa",
+  "lat": -24.6463,
+  "lng": 25.9119
+ },
+ {
+  "capital": "Brasília",
+  "country": "Brazil",
+  "cca2": "BR",
+  "ccn3": "076",
+  "region": "Americas",
+  "subregion": "South America",
+  "lat": -15.7814,
+  "lng": -47.918
+ },
+ {
+  "capital": "Bandar Seri Begawan",
+  "country": "Brunei",
+  "cca2": "BN",
+  "ccn3": "096",
+  "region": "Asia",
+  "subregion": "South-Eastern Asia",
+  "lat": 4.8833,
+  "lng": 114.9333
+ },
+ {
+  "capital": "Sofia",
+  "country": "Bulgaria",
+  "cca2": "BG",
+  "ccn3": "100",
+  "region": "Europe",
+  "subregion": "Southeast Europe",
+  "lat": 42.6853,
+  "lng": 23.3147
+ },
+ {
+  "capital": "Ouagadougou",
+  "country": "Burkina Faso",
+  "cca2": "BF",
+  "ccn3": "854",
+  "region": "Africa",
+  "subregion": "Western Africa",
+  "lat": 12.3723,
+  "lng": -1.5267
+ },
+ {
+  "capital": "Gitega",
+  "country": "Burundi",
+  "cca2": "BI",
+  "ccn3": "108",
+  "region": "Africa",
+  "subregion": "Eastern Africa",
+  "lat": -3.4271,
+  "lng": 29.9246
+ },
+ {
+  "capital": "Phnom Penh",
+  "country": "Cambodia",
+  "cca2": "KH",
+  "ccn3": "116",
+  "region": "Asia",
+  "subregion": "South-Eastern Asia",
+  "lat": 11.552,
+  "lng": 104.9147
+ },
+ {
+  "capital": "Yaoundé",
+  "country": "Cameroon",
+  "cca2": "CM",
+  "ccn3": "120",
+  "region": "Africa",
+  "subregion": "Middle Africa",
+  "lat": 3.8686,
+  "lng": 11.5147
+ },
+ {
+  "capital": "Ottawa",
+  "country": "Canada",
+  "cca2": "CA",
+  "ccn3": "124",
+  "region": "Americas",
+  "subregion": "North America",
+  "lat": 45.4186,
+  "lng": -75.702
+ },
+ {
+  "capital": "Praia",
+  "country": "Cape Verde",
+  "cca2": "CV",
+  "ccn3": "132",
+  "region": "Africa",
+  "subregion": "Western Africa",
+  "lat": 14.9167,
+  "lng": -23.5167
+ },
+ {
+  "capital": "Bangui",
+  "country": "Central African Republic",
+  "cca2": "CF",
+  "ccn3": "140",
+  "region": "Africa",
+  "subregion": "Middle Africa",
+  "lat": 4.3666,
+  "lng": 18.5583
+ },
+ {
+  "capital": "N'Djamena",
+  "country": "Chad",
+  "cca2": "TD",
+  "ccn3": "148",
+  "region": "Africa",
+  "subregion": "Middle Africa",
+  "lat": 12.115,
+  "lng": 15.0472
+ },
+ {
+  "capital": "Santiago",
+  "country": "Chile",
+  "cca2": "CL",
+  "ccn3": "152",
+  "region": "Americas",
+  "subregion": "South America",
+  "lat": -33.4481,
+  "lng": -70.669
+ },
+ {
+  "capital": "Beijing",
+  "country": "China",
+  "cca2": "CN",
+  "ccn3": "156",
+  "region": "Asia",
+  "subregion": "Eastern Asia",
+  "lat": 39.9308,
+  "lng": 116.3863
+ },
+ {
+  "capital": "Bogotá",
+  "country": "Colombia",
+  "cca2": "CO",
+  "ccn3": "170",
+  "region": "Americas",
+  "subregion": "South America",
+  "lat": 4.5984,
+  "lng": -74.0853
+ },
+ {
+  "capital": "Moroni",
+  "country": "Comoros",
+  "cca2": "KM",
+  "ccn3": "174",
+  "region": "Africa",
+  "subregion": "Eastern Africa",
+  "lat": -11.7042,
+  "lng": 43.2402
+ },
+ {
+  "capital": "Brazzaville",
+  "country": "Congo",
+  "cca2": "CG",
+  "ccn3": "178",
+  "region": "Africa",
+  "subregion": "Middle Africa",
+  "lat": -4.2572,
+  "lng": 15.2827
+ },
+ {
+  "capital": "San José",
+  "country": "Costa Rica",
+  "cca2": "CR",
+  "ccn3": "188",
+  "region": "Americas",
+  "subregion": "Central America",
+  "lat": 9.937,
+  "lng": -84.086
+ },
+ {
+  "capital": "Zagreb",
+  "country": "Croatia",
+  "cca2": "HR",
+  "ccn3": "191",
+  "region": "Europe",
+  "subregion": "Southeast Europe",
+  "lat": 45.8,
+  "lng": 16.0
+ },
+ {
+  "capital": "Havana",
+  "country": "Cuba",
+  "cca2": "CU",
+  "ccn3": "192",
+  "region": "Americas",
+  "subregion": "Caribbean",
+  "lat": 23.1339,
+  "lng": -82.3661
+ },
+ {
+  "capital": "Nicosia",
+  "country": "Cyprus",
+  "cca2": "CY",
+  "ccn3": "196",
+  "region": "Europe",
+  "subregion": "Southern Europe",
+  "lat": 35.1667,
+  "lng": 33.3666
+ },
+ {
+  "capital": "Prague",
+  "country": "Czechia",
+  "cca2": "CZ",
+  "ccn3": "203",
+  "region": "Europe",
+  "subregion": "Central Europe",
+  "lat": 50.0853,
+  "lng": 14.464
+ },
+ {
+  "capital": "Kinshasa",
+  "country": "DR Congo",
+  "cca2": "CD",
+  "ccn3": "180",
+  "region": "Africa",
+  "subregion": "Middle Africa",
+  "lat": -4.3278,
+  "lng": 15.313
+ },
+ {
+  "capital": "Copenhagen",
+  "country": "Denmark",
+  "cca2": "DK",
+  "ccn3": "208",
+  "region": "Europe",
+  "subregion": "Northern Europe",
+  "lat": 55.6805,
+  "lng": 12.5615
+ },
+ {
+  "capital": "Djibouti",
+  "country": "Djibouti",
+  "cca2": "DJ",
+  "ccn3": "262",
+  "region": "Africa",
+  "subregion": "Eastern Africa",
+  "lat": 11.595,
+  "lng": 43.148
+ },
+ {
+  "capital": "Roseau",
+  "country": "Dominica",
+  "cca2": "DM",
+  "ccn3": "212",
+  "region": "Americas",
+  "subregion": "Caribbean",
+  "lat": 15.301,
+  "lng": -61.387
+ },
+ {
+  "capital": "Santo Domingo",
+  "country": "Dominican Republic",
+  "cca2": "DO",
+  "ccn3": "214",
+  "region": "Americas",
+  "subregion": "Caribbean",
+  "lat": 18.472,
+  "lng": -69.902
+ },
+ {
+  "capital": "Quito",
+  "country": "Ecuador",
+  "cca2": "EC",
+  "ccn3": "218",
+  "region": "Americas",
+  "subregion": "South America",
+  "lat": -0.213,
+  "lng": -78.502
+ },
+ {
+  "capital": "Cairo",
+  "country": "Egypt",
+  "cca2": "EG",
+  "ccn3": "818",
+  "region": "Africa",
+  "subregion": "Northern Africa",
+  "lat": 30.0519,
+  "lng": 31.248
+ },
+ {
+  "capital": "San Salvador",
+  "country": "El Salvador",
+  "cca2": "SV",
+  "ccn3": "222",
+  "region": "Americas",
+  "subregion": "Central America",
+  "lat": 13.7119,
+  "lng": -89.205
+ },
+ {
+  "capital": "Malabo",
+  "country": "Equatorial Guinea",
+  "cca2": "GQ",
+  "ccn3": "226",
+  "region": "Africa",
+  "subregion": "Middle Africa",
+  "lat": 3.75,
+  "lng": 8.7833
+ },
+ {
+  "capital": "Asmara",
+  "country": "Eritrea",
+  "cca2": "ER",
+  "ccn3": "232",
+  "region": "Africa",
+  "subregion": "Eastern Africa",
+  "lat": 15.3333,
+  "lng": 38.9333
+ },
+ {
+  "capital": "Tallinn",
+  "country": "Estonia",
+  "cca2": "EE",
+  "ccn3": "233",
+  "region": "Europe",
+  "subregion": "Northern Europe",
+  "lat": 59.4339,
+  "lng": 24.728
+ },
+ {
+  "capital": "Lobamba",
+  "country": "Eswatini",
+  "cca2": "SZ",
+  "ccn3": "748",
+  "region": "Africa",
+  "subregion": "Southern Africa",
+  "lat": -26.4667,
+  "lng": 31.2
+ },
+ {
+  "capital": "Addis Ababa",
+  "country": "Ethiopia",
+  "cca2": "ET",
+  "ccn3": "231",
+  "region": "Africa",
+  "subregion": "Eastern Africa",
+  "lat": 9.0353,
+  "lng": 38.6981
+ },
+ {
+  "capital": "Suva",
+  "country": "Fiji",
+  "cca2": "FJ",
+  "ccn3": "242",
+  "region": "Oceania",
+  "subregion": "Melanesia",
+  "lat": -18.133,
+  "lng": 178.4417
+ },
+ {
+  "capital": "Helsinki",
+  "country": "Finland",
+  "cca2": "FI",
+  "ccn3": "246",
+  "region": "Europe",
+  "subregion": "Northern Europe",
+  "lat": 60.1775,
+  "lng": 24.9322
+ },
+ {
+  "capital": "Paris",
+  "country": "France",
+  "cca2": "FR",
+  "ccn3": "250",
+  "region": "Europe",
+  "subregion": "Western Europe",
+  "lat": 48.8686,
+  "lng": 2.3314
+ },
+ {
+  "capital": "Libreville",
+  "country": "Gabon",
+  "cca2": "GA",
+  "ccn3": "266",
+  "region": "Africa",
+  "subregion": "Middle Africa",
+  "lat": 0.3854,
+  "lng": 9.458
+ },
+ {
+  "capital": "Banjul",
+  "country": "Gambia",
+  "cca2": "GM",
+  "ccn3": "270",
+  "region": "Africa",
+  "subregion": "Western Africa",
+  "lat": 13.4539,
+  "lng": -16.5917
+ },
+ {
+  "capital": "Tbilisi",
+  "country": "Georgia",
+  "cca2": "GE",
+  "ccn3": "268",
+  "region": "Asia",
+  "subregion": "Western Asia",
+  "lat": 41.727,
+  "lng": 44.7888
+ },
+ {
+  "capital": "Berlin",
+  "country": "Germany",
+  "cca2": "DE",
+  "ccn3": "276",
+  "region": "Europe",
+  "subregion": "Western Europe",
+  "lat": 52.5238,
+  "lng": 13.3996
+ },
+ {
+  "capital": "Accra",
+  "country": "Ghana",
+  "cca2": "GH",
+  "ccn3": "288",
+  "region": "Africa",
+  "subregion": "Western Africa",
+  "lat": 5.552,
+  "lng": -0.2187
+ },
+ {
+  "capital": "Athens",
+  "country": "Greece",
+  "cca2": "GR",
+  "ccn3": "300",
+  "region": "Europe",
+  "subregion": "Southern Europe",
+  "lat": 37.9853,
+  "lng": 23.7314
+ },
+ {
+  "capital": "St. George's",
+  "country": "Grenada",
+  "cca2": "GD",
+  "ccn3": "308",
+  "region": "Americas",
+  "subregion": "Caribbean",
+  "lat": 12.0526,
+  "lng": -61.7416
+ },
+ {
+  "capital": "Guatemala City",
+  "country": "Guatemala",
+  "cca2": "GT",
+  "ccn3": "320",
+  "region": "Americas",
+  "subregion": "Central America",
+  "lat": 14.6231,
+  "lng": -90.5289
+ },
+ {
+  "capital": "Conakry",
+  "country": "Guinea",
+  "cca2": "GN",
+  "ccn3": "324",
+  "region": "Africa",
+  "subregion": "Western Africa",
+  "lat": 9.5335,
+  "lng": -13.6822
+ },
+ {
+  "capital": "Bissau",
+  "country": "Guinea-Bissau",
+  "cca2": "GW",
+  "ccn3": "624",
+  "region": "Africa",
+  "subregion": "Western Africa",
+  "lat": 11.865,
+  "lng": -15.5984
+ },
+ {
+  "capital": "Georgetown",
+  "country": "Guyana",
+  "cca2": "GY",
+  "ccn3": "328",
+  "region": "Americas",
+  "subregion": "South America",
+  "lat": 6.802,
+  "lng": -58.167
+ },
+ {
+  "capital": "Port-au-Prince",
+  "country": "Haiti",
+  "cca2": "HT",
+  "ccn3": "332",
+  "region": "Americas",
+  "subregion": "Caribbean",
+  "lat": 18.543,
+  "lng": -72.338
+ },
+ {
+  "capital": "Tegucigalpa",
+  "country": "Honduras",
+  "cca2": "HN",
+  "ccn3": "340",
+  "region": "Americas",
+  "subregion": "Central America",
+  "lat": 14.104,
+  "lng": -87.2195
+ },
+ {
+  "capital": "Budapest",
+  "country": "Hungary",
+  "cca2": "HU",
+  "ccn3": "348",
+  "region": "Europe",
+  "subregion": "Central Europe",
+  "lat": 47.502,
+  "lng": 19.0814
+ },
+ {
+  "capital": "Reykjavik",
+  "country": "Iceland",
+  "cca2": "IS",
+  "ccn3": "352",
+  "region": "Europe",
+  "subregion": "Northern Europe",
+  "lat": 64.15,
+  "lng": -21.95
+ },
+ {
+  "capital": "New Delhi",
+  "country": "India",
+  "cca2": "IN",
+  "ccn3": "356",
+  "region": "Asia",
+  "subregion": "Southern Asia",
+  "lat": 28.6,
+  "lng": 77.2
+ },
+ {
+  "capital": "Jakarta",
+  "country": "Indonesia",
+  "cca2": "ID",
+  "ccn3": "360",
+  "region": "Asia",
+  "subregion": "South-Eastern Asia",
+  "lat": -6.1725,
+  "lng": 106.8275
+ },
+ {
+  "capital": "Tehran",
+  "country": "Iran",
+  "cca2": "IR",
+  "ccn3": "364",
+  "region": "Asia",
+  "subregion": "Southern Asia",
+  "lat": 35.6739,
+  "lng": 51.4224
+ },
+ {
+  "capital": "Baghdad",
+  "country": "Iraq",
+  "cca2": "IQ",
+  "ccn3": "368",
+  "region": "Asia",
+  "subregion": "Western Asia",
+  "lat": 33.3406,
+  "lng": 44.3919
+ },
+ {
+  "capital": "Dublin",
+  "country": "Ireland",
+  "cca2": "IE",
+  "ccn3": "372",
+  "region": "Europe",
+  "subregion": "Northern Europe",
+  "lat": 53.335,
+  "lng": -6.2509
+ },
+ {
+  "capital": "Jerusalem",
+  "country": "Israel",
+  "cca2": "IL",
+  "ccn3": "376",
+  "region": "Asia",
+  "subregion": "Western Asia",
+  "lat": 31.7784,
+  "lng": 35.2066
+ },
+ {
+  "capital": "Rome",
+  "country": "Italy",
+  "cca2": "IT",
+  "ccn3": "380",
+  "region": "Europe",
+  "subregion": "Southern Europe",
+  "lat": 41.8979,
+  "lng": 12.4813
+ },
+ {
+  "capital": "Yamoussoukro",
+  "country": "Ivory Coast",
+  "cca2": "CI",
+  "ccn3": "384",
+  "region": "Africa",
+  "subregion": "Western Africa",
+  "lat": 6.8184,
+  "lng": -5.2755
+ },
+ {
+  "capital": "Kingston",
+  "country": "Jamaica",
+  "cca2": "JM",
+  "ccn3": "388",
+  "region": "Americas",
+  "subregion": "Caribbean",
+  "lat": 17.9771,
+  "lng": -76.7674
+ },
+ {
+  "capital": "Tokyo",
+  "country": "Japan",
+  "cca2": "JP",
+  "ccn3": "392",
+  "region": "Asia",
+  "subregion": "Eastern Asia",
+  "lat": 35.687,
+  "lng": 139.7495
+ },
+ {
+  "capital": "Amman",
+  "country": "Jordan",
+  "cca2": "JO",
+  "ccn3": "400",
+  "region": "Asia",
+  "subregion": "Western Asia",
+  "lat": 31.952,
+  "lng": 35.9314
+ },
+ {
+  "capital": "Astana",
+  "country": "Kazakhstan",
+  "cca2": "KZ",
+  "ccn3": "398",
+  "region": "Asia",
+  "subregion": "Central Asia",
+  "lat": 51.1811,
+  "lng": 71.4278
+ },
+ {
+  "capital": "Nairobi",
+  "country": "Kenya",
+  "cca2": "KE",
+  "ccn3": "404",
+  "region": "Africa",
+  "subregion": "Eastern Africa",
+  "lat": -1.2814,
+  "lng": 36.8147
+ },
+ {
+  "capital": "South Tarawa",
+  "country": "Kiribati",
+  "cca2": "KI",
+  "ccn3": "296",
+  "region": "Oceania",
+  "subregion": "Micronesia",
+  "lat": 1.3382,
+  "lng": 173.0176
+ },
+ {
+  "capital": "Kuwait City",
+  "country": "Kuwait",
+  "cca2": "KW",
+  "ccn3": "414",
+  "region": "Asia",
+  "subregion": "Western Asia",
+  "lat": 29.3717,
+  "lng": 47.9764
+ },
+ {
+  "capital": "Bishkek",
+  "country": "Kyrgyzstan",
+  "cca2": "KG",
+  "ccn3": "417",
+  "region": "Asia",
+  "subregion": "Central Asia",
+  "lat": 42.875,
+  "lng": 74.5833
+ },
+ {
+  "capital": "Vientiane",
+  "country": "Laos",
+  "cca2": "LA",
+  "ccn3": "418",
+  "region": "Asia",
+  "subregion": "South-Eastern Asia",
+  "lat": 17.9667,
+  "lng": 102.6
+ },
+ {
+  "capital": "Riga",
+  "country": "Latvia",
+  "cca2": "LV",
+  "ccn3": "428",
+  "region": "Europe",
+  "subregion": "Northern Europe",
+  "lat": 56.95,
+  "lng": 24.1
+ },
+ {
+  "capital": "Beirut",
+  "country": "Lebanon",
+  "cca2": "LB",
+  "ccn3": "422",
+  "region": "Asia",
+  "subregion": "Western Asia",
+  "lat": 33.8739,
+  "lng": 35.5078
+ },
+ {
+  "capital": "Maseru",
+  "country": "Lesotho",
+  "cca2": "LS",
+  "ccn3": "426",
+  "region": "Africa",
+  "subregion": "Southern Africa",
+  "lat": -29.3167,
+  "lng": 27.4833
+ },
+ {
+  "capital": "Monrovia",
+  "country": "Liberia",
+  "cca2": "LR",
+  "ccn3": "430",
+  "region": "Africa",
+  "subregion": "Western Africa",
+  "lat": 6.3146,
+  "lng": -10.7997
+ },
+ {
+  "capital": "Tripoli",
+  "country": "Libya",
+  "cca2": "LY",
+  "ccn3": "434",
+  "region": "Africa",
+  "subregion": "Northern Africa",
+  "lat": 32.8925,
+  "lng": 13.18
+ },
+ {
+  "capital": "Vaduz",
+  "country": "Liechtenstein",
+  "cca2": "LI",
+  "ccn3": "438",
+  "region": "Europe",
+  "subregion": "Western Europe",
+  "lat": 47.1337,
+  "lng": 9.5167
+ },
+ {
+  "capital": "Vilnius",
+  "country": "Lithuania",
+  "cca2": "LT",
+  "ccn3": "440",
+  "region": "Europe",
+  "subregion": "Northern Europe",
+  "lat": 54.6834,
+  "lng": 25.3166
+ },
+ {
+  "capital": "Luxembourg",
+  "country": "Luxembourg",
+  "cca2": "LU",
+  "ccn3": "442",
+  "region": "Europe",
+  "subregion": "Western Europe",
+  "lat": 49.6117,
+  "lng": 6.13
+ },
+ {
+  "capital": "Antananarivo",
+  "country": "Madagascar",
+  "cca2": "MG",
+  "ccn3": "450",
+  "region": "Africa",
+  "subregion": "Eastern Africa",
+  "lat": -18.9147,
+  "lng": 47.5147
+ },
+ {
+  "capital": "Lilongwe",
+  "country": "Malawi",
+  "cca2": "MW",
+  "ccn3": "454",
+  "region": "Africa",
+  "subregion": "Eastern Africa",
+  "lat": -13.9833,
+  "lng": 33.7833
+ },
+ {
+  "capital": "Kuala Lumpur",
+  "country": "Malaysia",
+  "cca2": "MY",
+  "ccn3": "458",
+  "region": "Asia",
+  "subregion": "South-Eastern Asia",
+  "lat": 3.1686,
+  "lng": 101.698
+ },
+ {
+  "capital": "Malé",
+  "country": "Maldives",
+  "cca2": "MV",
+  "ccn3": "462",
+  "region": "Asia",
+  "subregion": "Southern Asia",
+  "lat": 4.1667,
+  "lng": 73.4999
+ },
+ {
+  "capital": "Bamako",
+  "country": "Mali",
+  "cca2": "ML",
+  "ccn3": "466",
+  "region": "Africa",
+  "subregion": "Western Africa",
+  "lat": 12.652,
+  "lng": -8.002
+ },
+ {
+  "capital": "Valletta",
+  "country": "Malta",
+  "cca2": "MT",
+  "ccn3": "470",
+  "region": "Europe",
+  "subregion": "Southern Europe",
+  "lat": 35.8997,
+  "lng": 14.5147
+ },
+ {
+  "capital": "Majuro",
+  "country": "Marshall Islands",
+  "cca2": "MH",
+  "ccn3": "584",
+  "region": "Oceania",
+  "subregion": "Micronesia",
+  "lat": 7.103,
+  "lng": 171.38
+ },
+ {
+  "capital": "Nouakchott",
+  "country": "Mauritania",
+  "cca2": "MR",
+  "ccn3": "478",
+  "region": "Africa",
+  "subregion": "Western Africa",
+  "lat": 18.0864,
+  "lng": -15.9753
+ },
+ {
+  "capital": "Port Louis",
+  "country": "Mauritius",
+  "cca2": "MU",
+  "ccn3": "480",
+  "region": "Africa",
+  "subregion": "Eastern Africa",
+  "lat": -20.1666,
+  "lng": 57.5
+ },
+ {
+  "capital": "Mexico City",
+  "country": "Mexico",
+  "cca2": "MX",
+  "ccn3": "484",
+  "region": "Americas",
+  "subregion": "North America",
+  "lat": 19.4444,
+  "lng": -99.1329
+ },
+ {
+  "capital": "Palikir",
+  "country": "Micronesia",
+  "cca2": "FM",
+  "ccn3": "583",
+  "region": "Oceania",
+  "subregion": "Micronesia",
+  "lat": 6.9166,
+  "lng": 158.15
+ },
+ {
+  "capital": "Chișinău",
+  "country": "Moldova",
+  "cca2": "MD",
+  "ccn3": "498",
+  "region": "Europe",
+  "subregion": "Eastern Europe",
+  "lat": 47.005,
+  "lng": 28.8577
+ },
+ {
+  "capital": "Monaco",
+  "country": "Monaco",
+  "cca2": "MC",
+  "ccn3": "492",
+  "region": "Europe",
+  "subregion": "Western Europe",
+  "lat": 43.7396,
+  "lng": 7.4069
+ },
+ {
+  "capital": "Ulaanbaatar",
+  "country": "Mongolia",
+  "cca2": "MN",
+  "ccn3": "496",
+  "region": "Asia",
+  "subregion": "Eastern Asia",
+  "lat": 47.9186,
+  "lng": 106.9147
+ },
+ {
+  "capital": "Podgorica",
+  "country": "Montenegro",
+  "cca2": "ME",
+  "ccn3": "499",
+  "region": "Europe",
+  "subregion": "Southeast Europe",
+  "lat": 42.466,
+  "lng": 19.2663
+ },
+ {
+  "capital": "Rabat",
+  "country": "Morocco",
+  "cca2": "MA",
+  "ccn3": "504",
+  "region": "Africa",
+  "subregion": "Northern Africa",
+  "lat": 34.0253,
+  "lng": -6.8364
+ },
+ {
+  "capital": "Maputo",
+  "country": "Mozambique",
+  "cca2": "MZ",
+  "ccn3": "508",
+  "region": "Africa",
+  "subregion": "Eastern Africa",
+  "lat": -25.9533,
+  "lng": 32.5872
+ },
+ {
+  "capital": "Naypyidaw",
+  "country": "Myanmar",
+  "cca2": "MM",
+  "ccn3": "104",
+  "region": "Asia",
+  "subregion": "South-Eastern Asia",
+  "lat": 19.7685,
+  "lng": 96.1167
+ },
+ {
+  "capital": "Windhoek",
+  "country": "Namibia",
+  "cca2": "NA",
+  "ccn3": "516",
+  "region": "Africa",
+  "subregion": "Southern Africa",
+  "lat": -22.57,
+  "lng": 17.0835
+ },
+ {
+  "capital": "Yaren",
+  "country": "Nauru",
+  "cca2": "NR",
+  "ccn3": "520",
+  "region": "Oceania",
+  "subregion": "Micronesia",
+  "lat": -0.5477,
+  "lng": 166.9209
+ },
+ {
+  "capital": "Kathmandu",
+  "country": "Nepal",
+  "cca2": "NP",
+  "ccn3": "524",
+  "region": "Asia",
+  "subregion": "Southern Asia",
+  "lat": 27.7186,
+  "lng": 85.3147
+ },
+ {
+  "capital": "Amsterdam",
+  "country": "Netherlands",
+  "cca2": "NL",
+  "ccn3": "528",
+  "region": "Europe",
+  "subregion": "Western Europe",
+  "lat": 52.3519,
+  "lng": 4.9147
+ },
+ {
+  "capital": "Wellington",
+  "country": "New Zealand",
+  "cca2": "NZ",
+  "ccn3": "554",
+  "region": "Oceania",
+  "subregion": "Australia and New Zealand",
+  "lat": -41.3,
+  "lng": 174.7833
+ },
+ {
+  "capital": "Managua",
+  "country": "Nicaragua",
+  "cca2": "NI",
+  "ccn3": "558",
+  "region": "Americas",
+  "subregion": "Central America",
+  "lat": 12.155,
+  "lng": -86.2704
+ },
+ {
+  "capital": "Niamey",
+  "country": "Niger",
+  "cca2": "NE",
+  "ccn3": "562",
+  "region": "Africa",
+  "subregion": "Western Africa",
+  "lat": 13.5187,
+  "lng": 2.1147
+ },
+ {
+  "capital": "Abuja",
+  "country": "Nigeria",
+  "cca2": "NG",
+  "ccn3": "566",
+  "region": "Africa",
+  "subregion": "Western Africa",
+  "lat": 9.0853,
+  "lng": 7.5314
+ },
+ {
+  "capital": "Pyongyang",
+  "country": "North Korea",
+  "cca2": "KP",
+  "ccn3": "408",
+  "region": "Asia",
+  "subregion": "Eastern Asia",
+  "lat": 39.0214,
+  "lng": 125.7527
+ },
+ {
+  "capital": "Skopje",
+  "country": "North Macedonia",
+  "cca2": "MK",
+  "ccn3": "807",
+  "region": "Europe",
+  "subregion": "Southeast Europe",
+  "lat": 42.0,
+  "lng": 21.4335
+ },
+ {
+  "capital": "Oslo",
+  "country": "Norway",
+  "cca2": "NO",
+  "ccn3": "578",
+  "region": "Europe",
+  "subregion": "Northern Europe",
+  "lat": 59.9186,
+  "lng": 10.748
+ },
+ {
+  "capital": "Muscat",
+  "country": "Oman",
+  "cca2": "OM",
+  "ccn3": "512",
+  "region": "Asia",
+  "subregion": "Western Asia",
+  "lat": 23.6133,
+  "lng": 58.5933
+ },
+ {
+  "capital": "Islamabad",
+  "country": "Pakistan",
+  "cca2": "PK",
+  "ccn3": "586",
+  "region": "Asia",
+  "subregion": "Southern Asia",
+  "lat": 33.7019,
+  "lng": 73.1647
+ },
+ {
+  "capital": "Ngerulmud",
+  "country": "Palau",
+  "cca2": "PW",
+  "ccn3": "585",
+  "region": "Oceania",
+  "subregion": "Micronesia",
+  "lat": 7.5006,
+  "lng": 134.6242
+ },
+ {
+  "capital": "Panama City",
+  "country": "Panama",
+  "cca2": "PA",
+  "ccn3": "591",
+  "region": "Americas",
+  "subregion": "Central America",
+  "lat": 8.97,
+  "lng": -79.535
+ },
+ {
+  "capital": "Port Moresby",
+  "country": "Papua New Guinea",
+  "cca2": "PG",
+  "ccn3": "598",
+  "region": "Oceania",
+  "subregion": "Melanesia",
+  "lat": -9.4647,
+  "lng": 147.1925
+ },
+ {
+  "capital": "Asunción",
+  "country": "Paraguay",
+  "cca2": "PY",
+  "ccn3": "600",
+  "region": "Americas",
+  "subregion": "South America",
+  "lat": -25.2945,
+  "lng": -57.6435
+ },
+ {
+  "capital": "Lima",
+  "country": "Peru",
+  "cca2": "PE",
+  "ccn3": "604",
+  "region": "Americas",
+  "subregion": "South America",
+  "lat": -12.0461,
+  "lng": -77.052
+ },
+ {
+  "capital": "Manila",
+  "country": "Philippines",
+  "cca2": "PH",
+  "ccn3": "608",
+  "region": "Asia",
+  "subregion": "South-Eastern Asia",
+  "lat": 14.6061,
+  "lng": 120.9803
+ },
+ {
+  "capital": "Warsaw",
+  "country": "Poland",
+  "cca2": "PL",
+  "ccn3": "616",
+  "region": "Europe",
+  "subregion": "Central Europe",
+  "lat": 52.2519,
+  "lng": 20.9981
+ },
+ {
+  "capital": "Lisbon",
+  "country": "Portugal",
+  "cca2": "PT",
+  "ccn3": "620",
+  "region": "Europe",
+  "subregion": "Southern Europe",
+  "lat": 38.7247,
+  "lng": -9.1468
+ },
+ {
+  "capital": "Doha",
+  "country": "Qatar",
+  "cca2": "QA",
+  "ccn3": "634",
+  "region": "Asia",
+  "subregion": "Western Asia",
+  "lat": 25.2866,
+  "lng": 51.533
+ },
+ {
+  "capital": "Bucharest",
+  "country": "Romania",
+  "cca2": "RO",
+  "ccn3": "642",
+  "region": "Europe",
+  "subregion": "Southeast Europe",
+  "lat": 44.4353,
+  "lng": 26.098
+ },
+ {
+  "capital": "Moscow",
+  "country": "Russia",
+  "cca2": "RU",
+  "ccn3": "643",
+  "region": "Europe",
+  "subregion": "Eastern Europe",
+  "lat": 55.7541,
+  "lng": 37.6136
+ },
+ {
+  "capital": "Kigali",
+  "country": "Rwanda",
+  "cca2": "RW",
+  "ccn3": "646",
+  "region": "Africa",
+  "subregion": "Eastern Africa",
+  "lat": -1.9516,
+  "lng": 30.0586
+ },
+ {
+  "capital": "Basseterre",
+  "country": "Saint Kitts and Nevis",
+  "cca2": "KN",
+  "ccn3": "659",
+  "region": "Americas",
+  "subregion": "Caribbean",
+  "lat": 17.302,
+  "lng": -62.717
+ },
+ {
+  "capital": "Castries",
+  "country": "Saint Lucia",
+  "cca2": "LC",
+  "ccn3": "662",
+  "region": "Americas",
+  "subregion": "Caribbean",
+  "lat": 14.002,
+  "lng": -61.0
+ },
+ {
+  "capital": "Kingstown",
+  "country": "Saint Vincent and the Grenadines",
+  "cca2": "VC",
+  "ccn3": "670",
+  "region": "Americas",
+  "subregion": "Caribbean",
+  "lat": 13.1483,
+  "lng": -61.2121
+ },
+ {
+  "capital": "Apia",
+  "country": "Samoa",
+  "cca2": "WS",
+  "ccn3": "882",
+  "region": "Oceania",
+  "subregion": "Polynesia",
+  "lat": -13.8415,
+  "lng": -171.7386
+ },
+ {
+  "capital": "City of San Marino",
+  "country": "San Marino",
+  "cca2": "SM",
+  "ccn3": "674",
+  "region": "Europe",
+  "subregion": "Southern Europe",
+  "lat": 43.9361,
+  "lng": 12.4418
+ },
+ {
+  "capital": "Riyadh",
+  "country": "Saudi Arabia",
+  "cca2": "SA",
+  "ccn3": "682",
+  "region": "Asia",
+  "subregion": "Western Asia",
+  "lat": 24.6428,
+  "lng": 46.7708
+ },
+ {
+  "capital": "Dakar",
+  "country": "Senegal",
+  "cca2": "SN",
+  "ccn3": "686",
+  "region": "Africa",
+  "subregion": "Western Africa",
+  "lat": 14.7178,
+  "lng": -17.4751
+ },
+ {
+  "capital": "Belgrade",
+  "country": "Serbia",
+  "cca2": "RS",
+  "ccn3": "688",
+  "region": "Europe",
+  "subregion": "Southeast Europe",
+  "lat": 44.8206,
+  "lng": 20.466
+ },
+ {
+  "capital": "Victoria",
+  "country": "Seychelles",
+  "cca2": "SC",
+  "ccn3": "690",
+  "region": "Africa",
+  "subregion": "Eastern Africa",
+  "lat": -4.6166,
+  "lng": 55.45
+ },
+ {
+  "capital": "Freetown",
+  "country": "Sierra Leone",
+  "cca2": "SL",
+  "ccn3": "694",
+  "region": "Africa",
+  "subregion": "Western Africa",
+  "lat": 8.472,
+  "lng": -13.2362
+ },
+ {
+  "capital": "Singapore",
+  "country": "Singapore",
+  "cca2": "SG",
+  "ccn3": "702",
+  "region": "Asia",
+  "subregion": "South-Eastern Asia",
+  "lat": 1.295,
+  "lng": 103.8539
+ },
+ {
+  "capital": "Bratislava",
+  "country": "Slovakia",
+  "cca2": "SK",
+  "ccn3": "703",
+  "region": "Europe",
+  "subregion": "Central Europe",
+  "lat": 48.15,
+  "lng": 17.117
+ },
+ {
+  "capital": "Ljubljana",
+  "country": "Slovenia",
+  "cca2": "SI",
+  "ccn3": "705",
+  "region": "Europe",
+  "subregion": "Central Europe",
+  "lat": 46.0553,
+  "lng": 14.515
+ },
+ {
+  "capital": "Honiara",
+  "country": "Solomon Islands",
+  "cca2": "SB",
+  "ccn3": "090",
+  "region": "Oceania",
+  "subregion": "Melanesia",
+  "lat": -9.438,
+  "lng": 159.9498
+ },
+ {
+  "capital": "Mogadishu",
+  "country": "Somalia",
+  "cca2": "SO",
+  "ccn3": "706",
+  "region": "Africa",
+  "subregion": "Eastern Africa",
+  "lat": 2.0686,
+  "lng": 45.3647
+ },
+ {
+  "capital": "Pretoria",
+  "country": "South Africa",
+  "cca2": "ZA",
+  "ccn3": "710",
+  "region": "Africa",
+  "subregion": "Southern Africa",
+  "lat": -25.705,
+  "lng": 28.2275
+ },
+ {
+  "capital": "Seoul",
+  "country": "South Korea",
+  "cca2": "KR",
+  "ccn3": "410",
+  "region": "Asia",
+  "subregion": "Eastern Asia",
+  "lat": 37.5683,
+  "lng": 126.9978
+ },
+ {
+  "capital": "Juba",
+  "country": "South Sudan",
+  "cca2": "SS",
+  "ccn3": "728",
+  "region": "Africa",
+  "subregion": "Middle Africa",
+  "lat": 4.83,
+  "lng": 31.58
+ },
+ {
+  "capital": "Madrid",
+  "country": "Spain",
+  "cca2": "ES",
+  "ccn3": "724",
+  "region": "Europe",
+  "subregion": "Southern Europe",
+  "lat": 40.402,
+  "lng": -3.6853
+ },
+ {
+  "capital": "Colombo",
+  "country": "Sri Lanka",
+  "cca2": "LK",
+  "ccn3": "144",
+  "region": "Asia",
+  "subregion": "Southern Asia",
+  "lat": 6.932,
+  "lng": 79.8578
+ },
+ {
+  "capital": "Khartoum",
+  "country": "Sudan",
+  "cca2": "SD",
+  "ccn3": "729",
+  "region": "Africa",
+  "subregion": "Northern Africa",
+  "lat": 15.59,
+  "lng": 32.5322
+ },
+ {
+  "capital": "Paramaribo",
+  "country": "Suriname",
+  "cca2": "SR",
+  "ccn3": "740",
+  "region": "Americas",
+  "subregion": "South America",
+  "lat": 5.835,
+  "lng": -55.167
+ },
+ {
+  "capital": "Stockholm",
+  "country": "Sweden",
+  "cca2": "SE",
+  "ccn3": "752",
+  "region": "Europe",
+  "subregion": "Northern Europe",
+  "lat": 59.3527,
+  "lng": 18.0954
+ },
+ {
+  "capital": "Bern",
+  "country": "Switzerland",
+  "cca2": "CH",
+  "ccn3": "756",
+  "region": "Europe",
+  "subregion": "Western Europe",
+  "lat": 46.9167,
+  "lng": 7.467
+ },
+ {
+  "capital": "Damascus",
+  "country": "Syria",
+  "cca2": "SY",
+  "ccn3": "760",
+  "region": "Asia",
+  "subregion": "Western Asia",
+  "lat": 33.502,
+  "lng": 36.2981
+ },
+ {
+  "capital": "São Tomé",
+  "country": "São Tomé and Príncipe",
+  "cca2": "ST",
+  "ccn3": "678",
+  "region": "Africa",
+  "subregion": "Middle Africa",
+  "lat": 0.3334,
+  "lng": 6.7333
+ },
+ {
+  "capital": "Dushanbe",
+  "country": "Tajikistan",
+  "cca2": "TJ",
+  "ccn3": "762",
+  "region": "Asia",
+  "subregion": "Central Asia",
+  "lat": 38.56,
+  "lng": 68.7739
+ },
+ {
+  "capital": "Dodoma",
+  "country": "Tanzania",
+  "cca2": "TZ",
+  "ccn3": "834",
+  "region": "Africa",
+  "subregion": "Eastern Africa",
+  "lat": -6.1833,
+  "lng": 35.75
+ },
+ {
+  "capital": "Bangkok",
+  "country": "Thailand",
+  "cca2": "TH",
+  "ccn3": "764",
+  "region": "Asia",
+  "subregion": "South-Eastern Asia",
+  "lat": 13.7519,
+  "lng": 100.5147
+ },
+ {
+  "capital": "Dili",
+  "country": "Timor-Leste",
+  "cca2": "TL",
+  "ccn3": "626",
+  "region": "Asia",
+  "subregion": "South-Eastern Asia",
+  "lat": -8.5594,
+  "lng": 125.5795
+ },
+ {
+  "capital": "Lomé",
+  "country": "Togo",
+  "cca2": "TG",
+  "ccn3": "768",
+  "region": "Africa",
+  "subregion": "Western Africa",
+  "lat": 6.1339,
+  "lng": 1.2208
+ },
+ {
+  "capital": "Nuku'alofa",
+  "country": "Tonga",
+  "cca2": "TO",
+  "ccn3": "776",
+  "region": "Oceania",
+  "subregion": "Polynesia",
+  "lat": -21.1385,
+  "lng": -175.2206
+ },
+ {
+  "capital": "Port of Spain",
+  "country": "Trinidad and Tobago",
+  "cca2": "TT",
+  "ccn3": "780",
+  "region": "Americas",
+  "subregion": "Caribbean",
+  "lat": 10.652,
+  "lng": -61.517
+ },
+ {
+  "capital": "Tunis",
+  "country": "Tunisia",
+  "cca2": "TN",
+  "ccn3": "788",
+  "region": "Africa",
+  "subregion": "Northern Africa",
+  "lat": 36.8028,
+  "lng": 10.1797
+ },
+ {
+  "capital": "Ashgabat",
+  "country": "Turkmenistan",
+  "cca2": "TM",
+  "ccn3": "795",
+  "region": "Asia",
+  "subregion": "Central Asia",
+  "lat": 37.95,
+  "lng": 58.3833
+ },
+ {
+  "capital": "Funafuti",
+  "country": "Tuvalu",
+  "cca2": "TV",
+  "ccn3": "798",
+  "region": "Oceania",
+  "subregion": "Polynesia",
+  "lat": -8.5167,
+  "lng": 179.2166
+ },
+ {
+  "capital": "Ankara",
+  "country": "Türkiye",
+  "cca2": "TR",
+  "ccn3": "792",
+  "region": "Asia",
+  "subregion": "Western Asia",
+  "lat": 39.9292,
+  "lng": 32.8624
+ },
+ {
+  "capital": "Kampala",
+  "country": "Uganda",
+  "cca2": "UG",
+  "ccn3": "800",
+  "region": "Africa",
+  "subregion": "Eastern Africa",
+  "lat": 0.3186,
+  "lng": 32.5814
+ },
+ {
+  "capital": "Kyiv",
+  "country": "Ukraine",
+  "cca2": "UA",
+  "ccn3": "804",
+  "region": "Europe",
+  "subregion": "Eastern Europe",
+  "lat": 50.4353,
+  "lng": 30.5147
+ },
+ {
+  "capital": "Abu Dhabi",
+  "country": "United Arab Emirates",
+  "cca2": "AE",
+  "ccn3": "784",
+  "region": "Asia",
+  "subregion": "Western Asia",
+  "lat": 24.4667,
+  "lng": 54.3666
+ },
+ {
+  "capital": "London",
+  "country": "United Kingdom",
+  "cca2": "GB",
+  "ccn3": "826",
+  "region": "Europe",
+  "subregion": "Northern Europe",
+  "lat": 51.5019,
+  "lng": -0.1187
+ },
+ {
+  "capital": "Washington D.C.",
+  "country": "United States",
+  "cca2": "US",
+  "ccn3": "840",
+  "region": "Americas",
+  "subregion": "North America",
+  "lat": 38.9015,
+  "lng": -77.0114
+ },
+ {
+  "capital": "Montevideo",
+  "country": "Uruguay",
+  "cca2": "UY",
+  "ccn3": "858",
+  "region": "Americas",
+  "subregion": "South America",
+  "lat": -34.8561,
+  "lng": -56.173
+ },
+ {
+  "capital": "Tashkent",
+  "country": "Uzbekistan",
+  "cca2": "UZ",
+  "ccn3": "860",
+  "region": "Asia",
+  "subregion": "Central Asia",
+  "lat": 41.3136,
+  "lng": 69.293
+ },
+ {
+  "capital": "Port Vila",
+  "country": "Vanuatu",
+  "cca2": "VU",
+  "ccn3": "548",
+  "region": "Oceania",
+  "subregion": "Melanesia",
+  "lat": -17.7334,
+  "lng": 168.3166
+ },
+ {
+  "capital": "Vatican City",
+  "country": "Vatican City",
+  "cca2": "VA",
+  "ccn3": "336",
+  "region": "Europe",
+  "subregion": "Southern Europe",
+  "lat": 41.9033,
+  "lng": 12.4534
+ },
+ {
+  "capital": "Caracas",
+  "country": "Venezuela",
+  "cca2": "VE",
+  "ccn3": "862",
+  "region": "Americas",
+  "subregion": "South America",
+  "lat": 10.5029,
+  "lng": -66.919
+ },
+ {
+  "capital": "Hanoi",
+  "country": "Vietnam",
+  "cca2": "VN",
+  "ccn3": "704",
+  "region": "Asia",
+  "subregion": "South-Eastern Asia",
+  "lat": 21.0353,
+  "lng": 105.8481
+ },
+ {
+  "capital": "Sana'a",
+  "country": "Yemen",
+  "cca2": "YE",
+  "ccn3": "887",
+  "region": "Asia",
+  "subregion": "Western Asia",
+  "lat": 15.3567,
+  "lng": 44.2046
+ },
+ {
+  "capital": "Lusaka",
+  "country": "Zambia",
+  "cca2": "ZM",
+  "ccn3": "894",
+  "region": "Africa",
+  "subregion": "Eastern Africa",
+  "lat": -15.4147,
+  "lng": 28.2814
+ },
+ {
+  "capital": "Harare",
+  "country": "Zimbabwe",
+  "cca2": "ZW",
+  "ccn3": "716",
+  "region": "Africa",
+  "subregion": "Eastern Africa",
+  "lat": -17.8158,
+  "lng": 31.0428
+ }
+]

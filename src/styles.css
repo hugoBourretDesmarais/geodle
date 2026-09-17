@@ -1,0 +1,21 @@
+:root {
+  --bg: #0b1020;
+  --panel: rgba(13, 20, 38, 0.86);
+  --panel-border: rgba(255, 255, 255, 0.08);
+  --text: #eef2ff;
+  --muted: #9aa5c4;
+  --accent: #ff6b35;
+  --accent-2: #7cf2c4;
+  --good: #22c55e;
+  --font-display: 'Outfit', 'Inter', system-ui, sans-serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body, #app { height: 100%; margin: 0; }
+body {
+  background: var(--bg) radial-gradient(ellipse at 20% 10%, rgba(79, 156, 255, .12), transparent 55%),
+    radial-gradient(ellipse at 85% 90%, rgba(124, 242, 196, .08), transparent 50%);
+  color: var(--text); font-family: var(--font-body); overflow: hidden;
+}
+button { font: inherit; cursor: pointer; }
+a { color: var(--accent-2); }
