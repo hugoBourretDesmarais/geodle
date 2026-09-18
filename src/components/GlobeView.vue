@@ -10,6 +10,8 @@ const props = defineProps({
   highlightId: { type: String, default: null },
   interactive: { type: Boolean, default: true },
   labels: { type: Boolean, default: false },
+  hideLabelId: { type: String, default: null },
+  textLabels: { type: Array, default: () => [] },
 })
 const emit = defineEmits(['pick', 'country'])
 
@@ -45,7 +47,7 @@ function refreshPolygons() {
 }
 
 function label(d) {
-  if (!props.labels) return ''
+  if (!props.labels || d.id === props.hideLabelId) return ''
   const info = infoFor(d)
   return `<div class="tip"><b>${info.country}</b>${info.capital ? `<span>${info.capital}</span>` : ''}</div>`
 }
@@ -54,6 +56,7 @@ function sync() {
   if (!globe) return
   globe.htmlElementsData(props.pins.map(p => ({ ...p })))
   globe.arcsData(props.arc ? [{ ...props.arc }] : [])
+  globe.labelsData(props.textLabels.map(l => ({ ...l })))
   refreshPolygons()
 }
 
@@ -108,6 +111,14 @@ onMounted(() => {
     .arcDashGap(0.25)
     .arcDashAnimateTime(1400)
     .arcsTransitionDuration(0)
+    .labelsData([])
+    .labelText('text')
+    .labelSize('size')
+    .labelColor(() => 'rgba(255, 255, 255, 0.92)')
+    .labelAltitude(0.02)
+    .labelIncludeDot(false)
+    .labelResolution(3)
+    .labelsTransitionDuration(0)
 
   globe.globeMaterial().color.set(OCEAN)
   globe.globeMaterial().emissive.set('#05101f')
@@ -122,6 +133,7 @@ onMounted(() => {
   controls.rotateSpeed = 0.6
 
   globe.pointOfView(HOME, 0)
+  if (import.meta.env.DEV) window.__geodle = { pov: () => globe.pointOfView() }
   resize()
   window.addEventListener('resize', resize)
   sync()
@@ -133,7 +145,7 @@ onBeforeUnmount(() => {
   globe = null
 })
 
-watch(() => [props.pins, props.arc, props.highlightId, props.labels], sync, { deep: true })
+watch(() => [props.pins, props.arc, props.highlightId, props.labels, props.hideLabelId, props.textLabels], sync, { deep: true })
 
 defineExpose({ flyBetween, flyTo, resetView: () => globe?.pointOfView(HOME, 900) })
 </script>

@@ -113,20 +113,26 @@ export function distanceToFeature(p, feature) {
   return { km: distanceKm(p, q), nearest: { lat: q.lat, lng: q.lng } }
 }
 
+// Bounds of the largest outer ring, longitudes unwrapped so Russia and Fiji don't centre on 0°.
 export function featureBounds(feature) {
-  let minLat = 90, maxLat = -90, minLng = 180, maxLng = -180
-  for (const poly of polygons(feature.geometry))
-    for (const [lng, lat] of poly[0]) {
+  let best = null
+  for (const poly of polygons(feature.geometry)) {
+    const ring = unwrap(poly[0])
+    let minLat = 90, maxLat = -90, minLng = Infinity, maxLng = -Infinity
+    for (const [lng, lat] of ring) {
       if (lat < minLat) minLat = lat
       if (lat > maxLat) maxLat = lat
       if (lng < minLng) minLng = lng
       if (lng > maxLng) maxLng = lng
     }
-  return { minLat, maxLat, minLng, maxLng }
+    const area = (maxLat - minLat) * (maxLng - minLng) * Math.cos(rad((minLat + maxLat) / 2))
+    if (!best || area > best.area) best = { minLat, maxLat, minLng, maxLng, area }
+  }
+  return best || { minLat: 0, maxLat: 0, minLng: 0, maxLng: 0, area: 0 }
 }
 
 export function featureCenter(feature) {
   const b = featureBounds(feature)
   const span = Math.max(b.maxLat - b.minLat, (b.maxLng - b.minLng) * Math.cos(rad((b.minLat + b.maxLat) / 2)))
-  return { lat: (b.minLat + b.maxLat) / 2, lng: (b.minLng + b.maxLng) / 2, span }
+  return { lat: (b.minLat + b.maxLat) / 2, lng: normalizeLng((b.minLng + b.maxLng) / 2), span }
 }

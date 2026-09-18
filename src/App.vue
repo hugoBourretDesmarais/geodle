@@ -1,10 +1,10 @@
 <script setup>
-import { computed, onMounted, onBeforeUnmount, ref } from 'vue'
+import { computed, nextTick, onMounted, onBeforeUnmount, ref } from 'vue'
 import GlobeView from './components/GlobeView.vue'
 import { capitals, featureFor, infoFor, featureById } from './game/world.js'
 import { distanceKm, distanceToFeature, featureCenter, formatKm, verdict, shuffle } from './game/geo.js'
 import { loadStats, recordGame, resetStats } from './game/stats.js'
-import { GRADES, loadCards, resetCards, grade as gradeCard, nextInterval, formatInterval, counts, nextDue, buildQueue } from './game/srs.js'
+import { GRADES, loadCards, resetCards, grade as gradeCard, nextInterval, formatInterval, counts, nextDue, buildQueue, exportCards, importCards } from './game/srs.js'
 
 const ROUNDS = 5
 const REGIONS = ['All', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania']
@@ -36,6 +36,12 @@ const queue = ref([])
 const current = ref(null)
 const shown = ref(false)
 const session = ref({ reviewed: 0, again: 0 })
+const answer = ref('')
+const answerCursor = ref(0)
+const typed = ref(null)
+const answerInput = ref(null)
+const importInput = ref(null)
+const importError = ref('')
 
 const round = computed(() => rounds.value[index.value])
 const totalKm = computed(() => rounds.value.reduce((s, r) => s + (r.distanceKm ?? 0), 0))
@@ -49,6 +55,36 @@ const learnCounts = computed(() => counts(cards.value, pool.value))
 const learnNextDue = computed(() => nextDue(cards.value, pool.value))
 const currentFeature = computed(() => (current.value ? featureFor(current.value) : null))
 const currentTiny = computed(() => !currentFeature.value || featureCenter(currentFeature.value).span < 1.5)
+const correct = computed(() => typed.value != null && typed.value.ccn3 === current.value?.ccn3)
+const suggestedGrade = computed(() => (typed.value == null ? null : correct.value ? 'good' : 'again'))
+
+const norm = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+const answerHits = computed(() => {
+  const q = norm(answer.value.trim())
+  if (!q) return []
+  const starts = capitals.filter(c => norm(c.country).startsWith(q))
+  const rest = capitals.filter(c => !starts.includes(c) && norm(c.country).includes(q))
+  return [...starts, ...rest].slice(0, 6)
+})
+
+const neighbourLabels = computed(() => {
+  if (!learning.value || !current.value || !currentFeature.value) return []
+  const c = featureCenter(currentFeature.value)
+  const size = Math.max(0.3, Math.min(1.2, c.span / 20))
+  const cosLat = Math.cos((c.lat * Math.PI) / 180)
+  return capitals
+    .filter(k => k.ccn3 !== current.value.ccn3)
+    .map(k => {
+      const f = featureFor(k)
+      if (!f) return null
+      const kc = featureCenter(f)
+      const dLat = kc.lat - c.lat, dLng = (((kc.lng - c.lng + 540) % 360) - 180) * cosLat
+      return { lat: kc.lat, lng: kc.lng, text: k.country, size, d: Math.hypot(dLat, dLng) - kc.span / 2 }
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.d - b.d)
+    .slice(0, 12)
+})
 
 const prompt = computed(() => (round.value ? (gameMode.value === 'capital' ? round.value.capital.capital : round.value.capital.country) : ''))
 
@@ -98,9 +134,51 @@ function focusCountry(cap, minAlt = 0.4) {
 
 function showNext() {
   shown.value = false
+  typed.value = null
+  answer.value = ''
+  answerCursor.value = 0
   current.value = queue.value.shift() || null
-  if (current.value) focusCountry(current.value, 0.25)
-  else globeRef.value?.resetView()
+  nextTick(() => {
+    if (current.value) {
+      focusCountry(current.value, 0.25)
+      answerInput.value?.focus()
+    } else globeRef.value?.resetView()
+  })
+}
+
+function submitAnswer(pick) {
+  if (!learning.value || !current.value || shown.value) return
+  const choice = pick || answerHits.value[answerCursor.value] || answerHits.value[0]
+  if (!choice) return
+  typed.value = choice
+  shown.value = true
+}
+
+function moveCursor(delta) {
+  const n = answerHits.value.length
+  if (!n) return
+  answerCursor.value = (answerCursor.value + delta + n) % n
+}
+
+function exportProgress() {
+  const blob = new Blob([exportCards()], { type: 'application/json' })
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(blob)
+  a.download = `geodle-flashcards-${new Date().toISOString().slice(0, 10)}.json`
+  a.click()
+  URL.revokeObjectURL(a.href)
+}
+
+async function importProgress(e) {
+  const file = e.target.files?.[0]
+  e.target.value = ''
+  if (!file) return
+  try {
+    cards.value = importCards(await file.text())
+    importError.value = ''
+  } catch (err) {
+    importError.value = err.message
+  }
 }
 
 function beginLearn() {
@@ -118,7 +196,7 @@ function reveal() {
 
 function rate(g) {
   if (!learning.value || !current.value || !shown.value) return
-  cards.value = gradeCard(cards.value, current.value.ccn3, g)
+  cards.value = gradeCard(cards.value, current.value.ccn3, g, typed.value?.country ?? null)
   session.value.reviewed += 1
   if (g === 'again') {
     session.value.again += 1
@@ -213,16 +291,18 @@ function onKey(e) {
     selected.value = null
     return
   }
-  if (e.target.tagName === 'INPUT') return
   if (learning.value) {
+    if (e.target.tagName === 'INPUT') return
     if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault()
-      reveal()
+      if (shown.value && suggestedGrade.value) rate(suggestedGrade.value)
+      else reveal()
     }
     const g = GRADES.find(x => x.key === e.key)
     if (g) rate(g.id)
     return
   }
+  if (e.target.tagName === 'INPUT') return
   if (e.key !== 'Enter' && e.key !== ' ') return
   if (!playing.value) return
   e.preventDefault()
@@ -245,7 +325,9 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
       :arc="arc"
       :highlight-id="highlightId"
       :interactive="playing && !revealed"
-      :labels="exploring"
+      :labels="exploring || learning"
+      :hide-label-id="learning ? current?.ccn3 : null"
+      :text-labels="neighbourLabels"
       @pick="onPick"
       @country="onCountry"
     />
@@ -303,7 +385,13 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
         </div>
       </div>
       <button class="primary" @click="begin">{{ mode === 'explore' ? 'Explore the globe' : mode === 'learn' ? 'Review' : `Start · ${ROUNDS} rounds` }}</button>
-      <button v-if="mode === 'learn' && learnCounts.learned + learnCounts.due" class="ghost" @click="wipeCards">Forget flashcard progress</button>
+      <div v-if="mode === 'learn'" class="row small-row">
+        <button class="ghost small" @click="exportProgress">Export progress</button>
+        <button class="ghost small" @click="importInput.click()">Import</button>
+        <input ref="importInput" type="file" accept="application/json,.json" hidden @change="importProgress" />
+        <button v-if="learnCounts.learned + learnCounts.due" class="ghost small" @click="wipeCards">Forget all</button>
+      </div>
+      <p v-if="importError" class="err">{{ importError }}</p>
       <dl v-if="stats.games" class="stats">
         <div><dt>Games</dt><dd>{{ stats.games }}</dd></div>
         <div><dt>Avg / guess</dt><dd>{{ formatKm(avgKm) }}</dd></div>
@@ -361,19 +449,43 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
       <template v-if="current">
         <div class="prompt">
           <span class="prompt-label">Which country is lit up?</span>
-          <strong v-if="shown" class="prompt-city">{{ current.country }}</strong>
+          <strong v-if="shown" class="prompt-city" :class="{ ok: correct, bad: typed && !correct }">{{ current.country }}</strong>
           <strong v-else class="prompt-city muted">?</strong>
         </div>
         <div class="bottom">
-          <button v-if="!shown" class="primary" @click="reveal">Show answer</button>
+          <div v-if="!shown" class="answer">
+            <input
+              ref="answerInput"
+              v-model="answer"
+              type="text"
+              placeholder="Type the country…"
+              autocomplete="off"
+              spellcheck="false"
+              @input="answerCursor = 0"
+              @keydown.enter.prevent="submitAnswer()"
+              @keydown.down.prevent="moveCursor(1)"
+              @keydown.up.prevent="moveCursor(-1)"
+            />
+            <ul v-if="answerHits.length" class="hits">
+              <li v-for="(c, i) in answerHits" :key="c.ccn3">
+                <button :class="{ cur: i === answerCursor }" @mousedown.prevent="submitAnswer(c)">
+                  <b>{{ c.country }}</b><span>{{ c.subregion || c.region }}</span>
+                </button>
+              </li>
+            </ul>
+            <button class="ghost small" @click="reveal">I don't know</button>
+          </div>
           <div v-else class="result">
+            <div v-if="typed" class="result-verdict" :class="{ ok: correct, bad: !correct }">
+              {{ correct ? 'Correct' : `You said ${typed.country}` }}
+            </div>
             <div class="result-answer"><span class="dot capital"></span>Capital <b>{{ current.capital }}</b> · {{ current.subregion || current.region }}</div>
             <div class="grades">
-              <button v-for="g in GRADES" :key="g.id" class="grade" :class="g.id" @click="rate(g.id)">
+              <button v-for="g in GRADES" :key="g.id" class="grade" :class="[g.id, { suggested: g.id === suggestedGrade }]" @click="rate(g.id)">
                 <span>{{ g.label }}</span><small>{{ formatInterval(nextInterval(cards[current.ccn3], g.id)) }}</small>
               </button>
             </div>
-            <span class="keys">keys 1–4</span>
+            <span class="keys">keys 1–4{{ suggestedGrade ? ' · Enter accepts the highlighted one' : '' }}</span>
           </div>
         </div>
       </template>
@@ -440,6 +552,16 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 .grade:hover { border-color: rgba(255, 255, 255, .3); }
 .grade.again { color: #ff7b7b; } .grade.hard { color: #ffb35c; } .grade.good { color: var(--accent-2); } .grade.easy { color: #4f9cff; }
 .keys { margin-top: 6px; color: var(--muted); font-size: 12px; }
+.grade.suggested { border-color: currentColor; background: rgba(255, 255, 255, .1); box-shadow: 0 0 0 1px currentColor inset; }
+.prompt-city.ok, .result-verdict.ok { color: var(--good); }
+.prompt-city.bad, .result-verdict.bad { color: #ff7b7b; }
+.answer { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.answer input { width: 100%; padding: 14px 20px; border-radius: 999px; border: 1px solid var(--panel-border); background: var(--panel); color: var(--text); font: inherit; font-size: 17px; backdrop-filter: blur(8px); outline: none; text-align: center; }
+.answer input:focus { border-color: var(--accent-2); }
+.answer .hits { width: 100%; margin: 0; }
+.hits button.cur { background: rgba(124, 242, 196, .16); }
+.small-row { gap: 8px; }
+.err { margin: 0; color: #ff7b7b; font-size: 13px; }
 
 .prompt { position: absolute; top: 70px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 12px 28px; border-radius: 16px; background: var(--panel); border: 1px solid var(--panel-border); backdrop-filter: blur(8px); box-shadow: 0 12px 30px rgba(0, 0, 0, .35); pointer-events: none; max-width: 92vw; }
 .prompt-label { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--muted); }

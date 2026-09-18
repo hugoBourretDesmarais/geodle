@@ -30,7 +30,20 @@ export function resetCards() {
 }
 
 function fresh() {
-  return { ease: 2.5, interval: 0, due: 0, reps: 0, lapses: 0 }
+  return { ease: 2.5, interval: 0, due: 0, reps: 0, lapses: 0, log: [] }
+}
+
+export function exportCards() {
+  return JSON.stringify({ app: 'geodle', version: 1, exported: new Date().toISOString(), cards: load() }, null, 1)
+}
+
+export function importCards(text) {
+  const data = JSON.parse(text)
+  const cards = data?.cards && typeof data.cards === 'object' ? data.cards : data
+  if (!cards || typeof cards !== 'object') throw new Error('Not a GeoDle export')
+  for (const c of Object.values(cards)) if (typeof c.due !== 'number' || typeof c.ease !== 'number') throw new Error('Not a GeoDle export')
+  save(cards)
+  return cards
 }
 
 // Returns the next interval in ms for a card and grade, SM-2 with a short learning step.
@@ -44,7 +57,7 @@ export function nextInterval(card, grade) {
   return Math.round(c.interval * mult)
 }
 
-export function grade(cards, id, g, now = Date.now()) {
+export function grade(cards, id, g, typed, now = Date.now()) {
   const c = { ...(cards[id] || fresh()) }
   const interval = nextInterval(c, g)
   if (g === 'again') {
@@ -58,6 +71,7 @@ export function grade(cards, id, g, now = Date.now()) {
   c.interval = interval
   c.due = now + interval
   c.last = now
+  c.log = [...(c.log || []), [now, g, typed ?? null]].slice(-50)
   const next = { ...cards, [id]: c }
   save(next)
   return next
