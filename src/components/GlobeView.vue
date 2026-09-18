@@ -117,7 +117,7 @@ function resize() {
 onMounted(() => {
   const dpr = window.devicePixelRatio || 1
   const lowEnd = (navigator.hardwareConcurrency || 4) <= 4 || dpr >= 2.5
-  globe = Globe({ animateIn: false, rendererConfig: { antialias: !lowEnd, alpha: true, powerPreference: 'high-performance' } })(canvasEl.value)
+  globe = Globe({ animateIn: false, rendererConfig: { antialias: true, alpha: true, powerPreference: 'high-performance' } })(canvasEl.value)
     .backgroundColor('rgba(0,0,0,0)')
     .showAtmosphere(true)
     .atmosphereColor('#4f9cff')
@@ -136,7 +136,7 @@ onMounted(() => {
     .arcDashAnimateTime(1400)
     .arcsTransitionDuration(0)
 
-  globe.renderer().setPixelRatio(Math.min(dpr, lowEnd ? 1.25 : 2))
+  globe.renderer().setPixelRatio(Math.min(dpr, lowEnd ? 1.75 : 2))
   globe.globeMaterial().color.set(OCEAN)
   globe.globeMaterial().emissive.set('#05101f')
   globe.globeMaterial().shininess = 12
