@@ -182,3 +182,28 @@ function computeCenter(feature) {
   const span = Math.max(b.maxLat - b.minLat, (b.maxLng - b.minLng) * Math.cos(rad((b.minLat + b.maxLat) / 2)))
   return { lat: (b.minLat + b.maxLat) / 2, lng: normalizeLng((b.minLng + b.maxLng) / 2), span }
 }
+
+// Area centroid of the largest ring; falls back to `inside` when a curved country (Norway,
+// Croatia) puts its centroid on a neighbour.
+const anchors = new WeakMap()
+
+export function labelPoint(feature, inside) {
+  if (anchors.has(feature)) return anchors.get(feature)
+  let best = null
+  for (const poly of polygons(feature.geometry)) {
+    const ring = unwrap(poly[0])
+    let a = 0, cx = 0, cy = 0
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+      const cross = ring[j][0] * ring[i][1] - ring[i][0] * ring[j][1]
+      a += cross
+      cx += (ring[j][0] + ring[i][0]) * cross
+      cy += (ring[j][1] + ring[i][1]) * cross
+    }
+    if (!a) continue
+    const area = Math.abs(a / 2)
+    if (!best || area > best.area) best = { area, lat: cy / (3 * a), lng: normalizeLng(cx / (3 * a)) }
+  }
+  const p = best && pointInFeature(best, feature) ? { lat: best.lat, lng: best.lng } : { lat: inside.lat, lng: inside.lng }
+  anchors.set(feature, p)
+  return p
+}

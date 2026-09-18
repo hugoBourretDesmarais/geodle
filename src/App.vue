@@ -3,7 +3,7 @@ import { computed, defineAsyncComponent, nextTick, onMounted, onBeforeUnmount, r
 import { capitals, featureFor, infoFor, world, loadDetailedWorld } from './game/world.js'
 
 const GlobeView = defineAsyncComponent(() => import('./components/GlobeView.vue'))
-import { distanceKm, distanceToFeature, featureCenter, formatKm, verdict, shuffle } from './game/geo.js'
+import { distanceKm, distanceToFeature, featureCenter, labelPoint, formatKm, verdict, shuffle } from './game/geo.js'
 import { loadStats, recordGame, resetStats } from './game/stats.js'
 import { GRADES, loadCards, resetCards, grade as gradeCard, nextInterval, formatInterval, counts, nextDue, buildQueue, exportCards, importCards } from './game/srs.js'
 
@@ -81,8 +81,9 @@ const neighbourLabels = computed(() => {
       const f = featureFor(k)
       if (!f) return null
       const kc = featureCenter(f)
+      const at = labelPoint(f, k)
       const dLat = kc.lat - c.lat, dLng = (((kc.lng - c.lng + 540) % 360) - 180) * cosLat
-      return { lat: kc.lat, lng: kc.lng, text: k.country, size, d: Math.hypot(dLat, dLng) - kc.span / 2 }
+      return { lat: at.lat, lng: at.lng, text: k.country, size, d: Math.hypot(dLat, dLng) - kc.span / 2 }
     })
     .filter(Boolean)
     .sort((a, b) => a.d - b.d)
@@ -537,6 +538,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 
 <style scoped>
 .app { position: relative; height: 100%; }
+.app > :not(.globe) { z-index: 2; }
 .top { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; pointer-events: none; }
 .top > * { pointer-events: auto; }
 .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--text); font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: .5px; }

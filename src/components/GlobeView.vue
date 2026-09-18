@@ -190,7 +190,7 @@ defineExpose({ flyBetween, flyTo, resetView: () => globe?.pointOfView(HOME, 900)
 </template>
 
 <style>
-.globe { position: absolute; inset: 0; }
+.globe { position: absolute; inset: 0; z-index: 0; }
 .globe-canvas { position: absolute; inset: 0; }
 .globe canvas { display: block; cursor: crosshair; }
 .globe.locked canvas { cursor: grab; }
