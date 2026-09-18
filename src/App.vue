@@ -1,7 +1,8 @@
 <script setup>
-import { computed, nextTick, onMounted, onBeforeUnmount, ref } from 'vue'
-import GlobeView from './components/GlobeView.vue'
-import { capitals, featureFor, infoFor, featureById } from './game/world.js'
+import { computed, defineAsyncComponent, nextTick, onMounted, onBeforeUnmount, ref } from 'vue'
+import { capitals, featureFor, infoFor, world, loadDetailedWorld } from './game/world.js'
+
+const GlobeView = defineAsyncComponent(() => import('./components/GlobeView.vue'))
 import { distanceKm, distanceToFeature, featureCenter, formatKm, verdict, shuffle } from './game/geo.js'
 import { loadStats, recordGame, resetStats } from './game/stats.js'
 import { GRADES, loadCards, resetCards, grade as gradeCard, nextInterval, formatInterval, counts, nextDue, buildQueue, exportCards, importCards } from './game/srs.js'
@@ -9,12 +10,13 @@ import { GRADES, loadCards, resetCards, grade as gradeCard, nextInterval, format
 const ROUNDS = 5
 const REGIONS = ['All', 'Africa', 'Americas', 'Asia', 'Europe', 'Oceania']
 const MODES = [
-  { id: 'country', name: 'Countries', blurb: 'Read a country, pin it. Land inside and you score 0 km.' },
-  { id: 'capital', name: 'Capitals', blurb: 'Read a capital, pin the city. Scored by distance.' },
-  { id: 'learn', name: 'Learn', blurb: 'Flashcards. A country lights up, you name it, grade yourself. Spaced repetition.' },
-  { id: 'explore', name: 'Explore', blurb: 'Free roam. Hover for names, click for the capital, search anything.' },
+  { id: 'country', name: 'Countries' },
+  { id: 'capital', name: 'Capitals' },
+  { id: 'learn', name: 'Learn' },
+  { id: 'explore', name: 'Explore' },
 ]
 const POINT_COUNTRY_KM = 30
+const BORDER_GRACE_KM = 8
 const NEW_LIMITS = [5, 10, 20]
 
 const screen = ref('start')
@@ -53,7 +55,7 @@ const learning = computed(() => screen.value === 'learn')
 const gameMode = computed(() => (mode.value === 'capital' ? 'capital' : 'country'))
 const learnCounts = computed(() => counts(cards.value, pool.value))
 const learnNextDue = computed(() => nextDue(cards.value, pool.value))
-const currentFeature = computed(() => (current.value ? featureFor(current.value) : null))
+const currentFeature = computed(() => (world.value && current.value ? featureFor(current.value) : null))
 const currentTiny = computed(() => !currentFeature.value || featureCenter(currentFeature.value).span < 1.5)
 const correct = computed(() => typed.value != null && typed.value.ccn3 === current.value?.ccn3)
 const suggestedGrade = computed(() => (typed.value == null ? null : correct.value ? 'good' : 'again'))
@@ -69,6 +71,7 @@ const answerHits = computed(() => {
 
 const neighbourLabels = computed(() => {
   if (!learning.value || !current.value || !currentFeature.value) return []
+  world.value
   const c = featureCenter(currentFeature.value)
   const size = Math.max(0.3, Math.min(1.2, c.span / 20))
   const cosLat = Math.cos((c.lat * Math.PI) / 180)
@@ -241,11 +244,13 @@ function score(r) {
     const km = distanceKm(r.guess, r.capital)
     return km <= POINT_COUNTRY_KM ? { km: 0, nearest: null } : { km, nearest: r.capital }
   }
-  return distanceToFeature(r.guess, feature)
+  const res = distanceToFeature(r.guess, feature)
+  return res.km <= BORDER_GRACE_KM ? { km: 0, nearest: null } : res
 }
 
-function confirm() {
+async function confirm() {
   if (!pending.value || revealed.value) return
+  await loadDetailedWorld()
   const r = round.value
   r.guess = pending.value
   const { km, nearest } = score(r)
@@ -313,7 +318,10 @@ function wipeStats() {
   if (window.confirm('Erase your local GeoDle stats?')) stats.value = resetStats()
 }
 
-onMounted(() => window.addEventListener('keydown', onKey))
+onMounted(() => {
+  window.addEventListener('keydown', onKey)
+  loadDetailedWorld()
+})
 onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 </script>
 
@@ -365,7 +373,6 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
       <div class="modes">
         <button v-for="m in MODES" :key="m.id" class="mode" :class="{ on: mode === m.id }" @click="mode = m.id">
           <strong>{{ m.name }}</strong>
-          <span>{{ m.blurb }}</span>
         </button>
       </div>
       <div v-if="mode !== 'explore'" class="chips">
@@ -588,10 +595,9 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 .modal { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(92vw, 560px); max-height: calc(100vh - 140px); overflow: auto; padding: 30px 30px 26px; border-radius: 24px; background: var(--panel); border: 1px solid var(--panel-border); backdrop-filter: blur(14px); box-shadow: 0 24px 60px rgba(0, 0, 0, .55); text-align: center; display: flex; flex-direction: column; align-items: center; gap: 14px; }
 .modal h1 { margin: 0; font-family: var(--font-display); font-size: clamp(30px, 6vw, 44px); font-weight: 800; letter-spacing: -.5px; }
 .lead { margin: 0; color: var(--muted); line-height: 1.5; max-width: 42ch; }
-.modes { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
-.mode { display: flex; flex-direction: column; gap: 6px; padding: 14px 12px; border-radius: 14px; border: 1px solid var(--panel-border); background: rgba(255, 255, 255, .04); color: var(--text); text-align: left; transition: border-color .12s, background .12s; }
+.modes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: 100%; }
+.mode { display: flex; justify-content: center; padding: 14px 10px; border-radius: 14px; border: 1px solid var(--panel-border); background: rgba(255, 255, 255, .04); color: var(--text); transition: border-color .12s, background .12s; }
 .mode strong { font-family: var(--font-display); font-size: 17px; }
-.mode span { color: var(--muted); font-size: 13px; line-height: 1.4; }
 .mode:hover { border-color: rgba(255, 255, 255, .25); }
 .mode.on { background: rgba(124, 242, 196, .12); border-color: var(--accent-2); }
 .mode.on strong { color: var(--accent-2); }
@@ -634,7 +640,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onKey))
 @media (max-width: 600px) {
   .prompt { top: 64px; padding: 10px 18px; }
   .bottom, .card { bottom: 48px; }
-  .modes { grid-template-columns: 1fr; }
+  .modes { grid-template-columns: repeat(2, 1fr); }
   .grades { grid-template-columns: repeat(2, 1fr); }
   .stats { grid-template-columns: repeat(2, 1fr); }
   .hud { font-size: 13px; padding: 6px 10px; }

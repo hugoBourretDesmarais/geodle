@@ -21,10 +21,17 @@ Live at https://hugobourretdesmarais.github.io/geodle/ (Home: https://hugobourre
 
 ## Stack
 
-Vue 3 + Vite. The globe is [globe.gl](https://github.com/vasturiano/globe.gl) (three.js) rendering
-Natural Earth 1:50m country polygons from `world-atlas` (Tuvalu is the only state without one; it is
-scored as a 30 km point). Point-in-polygon and nearest-border maths live in `src/game/geo.js`, with
-antimeridian-crossing rings (Russia, Fiji) unwrapped first. No map tiles or textures are fetched.
+Vue 3 + Vite. The globe is [globe.gl](https://github.com/vasturiano/globe.gl) (three.js) for the
+sphere, atmosphere, camera, arcs and HTML pins. Countries are not globe.gl polygons: those cost one
+mesh per ring (about 3,200 objects and 6,000 draw calls for the world). Instead `src/game/countryLayer.js`
+draws every country in one vertex-coloured mesh plus one line set (4 draw calls). The tessellation
+runs in a Web Worker (`src/game/mesh.worker.js`) so the main thread never stalls; hover and click
+hit-testing is our own point-in-polygon with cached bounds (`src/game/geo.js`).
+
+Loading is staged for slow devices: the start screen and coarse 1:110m shapes ship in the first
+~85 KB (gzipped) of JS, the three.js chunk loads lazily, and the simplified 1:50m shapes stream in
+from `public/world-50m.json` (160 KB gzipped) and swap in once the worker has built them. Scoring
+waits for the detailed shapes. Pixel ratio is capped and antialiasing is dropped on low-end devices.
 
 ## Data
 

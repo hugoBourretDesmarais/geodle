@@ -49,7 +49,11 @@ export function normalizeLng(lng) {
 
 // Rings that cross the antimeridian (Russia, Fiji) jump 360° between neighbours; unwrap them
 // into a continuous strip and test the point at each 360° image.
+const unwrapped = new WeakMap()
+
 function unwrap(ring) {
+  const hit = unwrapped.get(ring)
+  if (hit) return hit
   const out = [ring[0]]
   for (let i = 1; i < ring.length; i++) {
     const prev = out[i - 1][0]
@@ -58,7 +62,40 @@ function unwrap(ring) {
     while (x - prev < -180) x += 360
     out.push([x, ring[i][1]])
   }
+  unwrapped.set(ring, out)
   return out
+}
+
+// Per-feature lat range and unwrapped lng ranges, for cheap rejection before the ray cast.
+const extents = new WeakMap()
+
+function extentOf(feature) {
+  let e = extents.get(feature)
+  if (e) return e
+  e = { minLat: 90, maxLat: -90, lng: [] }
+  for (const poly of polygons(feature.geometry)) {
+    let minLng = Infinity, maxLng = -Infinity
+    for (const [lng, lat] of unwrap(poly[0])) {
+      if (lat < e.minLat) e.minLat = lat
+      if (lat > e.maxLat) e.maxLat = lat
+      if (lng < minLng) minLng = lng
+      if (lng > maxLng) maxLng = lng
+    }
+    e.lng.push([minLng, maxLng])
+  }
+  extents.set(feature, e)
+  return e
+}
+
+function mayContain(feature, p) {
+  const e = extentOf(feature)
+  if (p.lat < e.minLat || p.lat > e.maxLat) return false
+  return e.lng.some(([a, b]) => (p.lng >= a && p.lng <= b) || (p.lng + 360 >= a && p.lng + 360 <= b) || (p.lng - 360 >= a && p.lng - 360 <= b))
+}
+
+export function hitTest(features, p) {
+  for (const f of features) if (mayContain(f, p) && pointInFeature(p, f)) return f
+  return null
 }
 
 function rayCast(ring, lng, lat) {
@@ -131,7 +168,16 @@ export function featureBounds(feature) {
   return best || { minLat: 0, maxLat: 0, minLng: 0, maxLng: 0, area: 0 }
 }
 
+const centers = new WeakMap()
+
 export function featureCenter(feature) {
+  if (centers.has(feature)) return centers.get(feature)
+  const c = computeCenter(feature)
+  centers.set(feature, c)
+  return c
+}
+
+function computeCenter(feature) {
   const b = featureBounds(feature)
   const span = Math.max(b.maxLat - b.minLat, (b.maxLng - b.minLng) * Math.cos(rad((b.minLat + b.maxLat) / 2)))
   return { lat: (b.minLat + b.maxLat) / 2, lng: normalizeLng((b.minLng + b.maxLng) / 2), span }
